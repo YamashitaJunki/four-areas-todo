@@ -141,12 +141,15 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  overflow: scroll;
 }
 .box div {
   padding: 40px;
   width: 45%;
   height: 400px;
+  overflow: scroll;
+}
+.box div::-webkit-scrollbar {
+  display: none;
 }
 .arrow {
   display: inline-block;
