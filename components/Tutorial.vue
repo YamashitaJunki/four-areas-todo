@@ -5,13 +5,14 @@
     <div class="top">
       <div class="mb-3">
         <div>
-          <label>タスクを入力</label>
-          <textarea
+          <div>タスクを入力</div>
+          <el-input
             v-model="message"
-            class="form-control w-50 m-auto"
+            class="w-50 mt-5"
+            type="textarea"
             placeholder="例:英語の勉強をする2"
-            @keypress.enter="submit()"
-          ></textarea>
+            @keypress.enter.native="submit()"
+          />
         </div>
       </div>
     </div>
@@ -51,7 +52,7 @@
       </div>
     </div>
     <div class="text-center mt-5">
-      <button class="" @click="reset()">タスクのリセット</button>
+      <el-button class="" @click="reset()">タスクのリセット</el-button>
     </div>
   </div>
 </template>
