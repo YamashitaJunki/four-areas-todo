@@ -24,4 +24,9 @@ export const mutations = {
     const num = obj.number
     state[num].splice(obj.index, 1)
   },
+  reset(state) {
+    Object.keys(state).forEach((data) => {
+      state[data] = []
+    })
+  },
 }

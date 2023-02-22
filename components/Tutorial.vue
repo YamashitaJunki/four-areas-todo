@@ -10,9 +10,9 @@
             v-model="message"
             class="form-control w-50 m-auto"
             placeholder="例:英語の勉強をする2"
+            @keypress.enter="submit()"
           ></textarea>
         </div>
-        <button class="mt-3" @click="submit()">Submit</button>
       </div>
     </div>
     <div class="w-100 text-center">緊急性</div>
@@ -50,6 +50,9 @@
         </div>
       </div>
     </div>
+    <div class="text-center mt-5">
+      <button class="" @click="reset()">タスクのリセット</button>
+    </div>
   </div>
 </template>
 
@@ -76,17 +79,25 @@ export default {
     submit() {
       const num = String(this.message.slice(-1))
       const taskNum = Number(this.hankaku2Zenkaku(num))
-      const taskMessage = this.message.slice(0, -1)
-      this.$store.commit('todo/insert', {
-        message: taskMessage,
-        num: taskNum,
-      })
+      if (taskNum <= 4 && taskNum >= 1) {
+        const taskMessage = this.message.slice(0, -1)
+        this.$store.commit('todo/insert', {
+          message: taskMessage,
+          num: taskNum,
+        })
+        this.message = ''
+      } else {
+        alert('末尾に１～４の数字を指定してください')
+      }
     },
     remove(num, idx) {
       this.$store.commit('todo/remove', {
         number: num,
         index: idx,
       })
+    },
+    reset() {
+      this.$store.commit('todo/reset')
     },
     hankaku2Zenkaku(str) {
       return str.replace(/[０-９]/g, function (s) {
