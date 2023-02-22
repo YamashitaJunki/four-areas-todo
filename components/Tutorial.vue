@@ -5,7 +5,7 @@
     <div class="top">
       <div class="mb-3">
         <div>
-          <div>タスクを入力</div>
+          <h3>Enter task.</h3>
           <el-input
             v-model="message"
             class="w-50 mt-5"
@@ -24,35 +24,52 @@
         <div class="bg-danger">
           <p>第１の領域</p>
           <p v-for="(msg, idx) in TODOMessage.one">
-            <input type="checkbox" /> {{ msg }}
-            <button @click="remove(`one`, idx)">削除</button>
+            <el-checkbox /> {{ msg }}
+            <el-button type="primary" class="delete" @click="remove(`one`, idx)"
+              >削除</el-button
+            >
           </p>
         </div>
         <div class="bg-warning">
           <p>第2の領域</p>
           <p v-for="(msg, idx) in TODOMessage.two">
-            <input type="checkbox" /> {{ msg }}
-            <button @click="remove(`two`, idx)">削除</button>
+            <label><el-checkbox /> {{ msg }}</label>
+            <el-button type="primary" class="delete" @click="remove(`two`, idx)"
+              >削除</el-button
+            >
           </p>
         </div>
         <div class="bg-success">
           <p>第3の領域</p>
-          <p v-for="(msg, idx) in TODOMessage.three">
-            <input type="checkbox" /> {{ msg }}
-            <button @click="remove(`three`, idx)">削除</button>
+          <p v-for="(msg, idx) in TODOMessage.three" :style="aas">
+            <el-checkbox />
+            {{ msg }}
+            <el-button
+              type="primary"
+              class="delete"
+              @click="remove(`three`, idx)"
+              >削除</el-button
+            >
           </p>
         </div>
         <div class="bg-primary">
           <p>第4の領域</p>
           <p v-for="(msg, idx) in TODOMessage.four">
-            <input type="checkbox" /> {{ msg }}
-            <button @click="remove(`four`, idx)">削除</button>
+            <el-checkbox /> {{ msg }}
+            <el-button
+              type="primary"
+              class="delete"
+              @click="remove(`four`, idx)"
+              >削除</el-button
+            >
           </p>
         </div>
       </div>
     </div>
     <div class="text-center mt-5">
-      <el-button class="" @click="reset()">タスクのリセット</el-button>
+      <el-button type="danger" round @click="reset()"
+        >タスクのリセット</el-button
+      >
     </div>
   </div>
 </template>
@@ -112,6 +129,7 @@ export default {
 <style>
 .main {
   padding: 100px;
+  font-size: 1.5rem;
 }
 .top {
   width: 100%;
@@ -123,6 +141,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+  overflow: scroll;
 }
 .box div {
   padding: 40px;
@@ -166,5 +185,14 @@ export default {
   left: 100%;
   top: 800px;
   transform: rotate(90deg) translate(0px, 63px);
+}
+.delete {
+  float: right;
+}
+label {
+  cursor: pointer;
+}
+.bb {
+  background-color: aqua;
 }
 </style>
