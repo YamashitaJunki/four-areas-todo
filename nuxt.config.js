@@ -2,7 +2,7 @@ export default {
   ssr: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'four-areas-TODO-app',
+    title: 'four-areas-todo-app',
     htmlAttrs: {
       lang: 'en',
     },
