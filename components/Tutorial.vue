@@ -9,6 +9,7 @@
           <textarea
             v-model="message"
             class="form-control w-50 m-auto"
+            placeholder="例:英語の勉強をする2"
           ></textarea>
         </div>
         <button class="mt-3" @click="submit()">Submit</button>
@@ -57,21 +58,16 @@ export default {
   name: 'NuxtTutorial',
   data: () => {
     return {
-      name: 'こんにち',
-      message: '(例：英語の勉強をする３)',
-      one: [],
-      two: [],
-      three: [],
-      four: [],
+      message: '',
     }
   },
   computed: {
     TODOMessage: function () {
       const msg = {
-        one: this.one,
-        two: this.two,
-        three: this.three,
-        four: this.four,
+        one: this.$store.state.todo.one,
+        two: this.$store.state.todo.two,
+        three: this.$store.state.todo.three,
+        four: this.$store.state.todo.four,
       }
       return msg
     },
@@ -81,21 +77,16 @@ export default {
       const num = String(this.message.slice(-1))
       const taskNum = Number(this.hankaku2Zenkaku(num))
       const taskMessage = this.message.slice(0, -1)
-      if (taskNum === 1) {
-        this.one.push(taskMessage)
-      }
-      if (taskNum === 2) {
-        this.two.push(taskMessage)
-      }
-      if (taskNum === 3) {
-        this.three.push(taskMessage)
-      }
-      if (taskNum === 4) {
-        this.four.push(taskMessage)
-      }
+      this.$store.commit('todo/insert', {
+        message: taskMessage,
+        num: taskNum,
+      })
     },
-    remove(number, idx) {
-      this.TODOMessage[number].splice(idx, 1)
+    remove(num, idx) {
+      this.$store.commit('todo/remove', {
+        number: num,
+        index: idx,
+      })
     },
     hankaku2Zenkaku(str) {
       return str.replace(/[０-９]/g, function (s) {
