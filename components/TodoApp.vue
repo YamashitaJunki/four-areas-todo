@@ -9,7 +9,7 @@
           <el-input
             v-model="message"
             class="w-50 mt-5"
-            type="textarea"
+            type="text"
             placeholder="例:英語の勉強をする2"
             @keypress.enter.native="submit()"
           />
@@ -24,7 +24,7 @@
         <div class="bg-danger">
           <p>第１の領域</p>
           <p v-for="(msg, idx) in TODOMessage.one">
-            <el-checkbox /> {{ msg }}
+            <label><el-checkbox /> {{ msg }}</label>
             <el-button type="primary" class="delete" @click="remove(`one`, idx)"
               >削除</el-button
             >
@@ -42,8 +42,7 @@
         <div class="bg-success">
           <p>第3の領域</p>
           <p v-for="(msg, idx) in TODOMessage.three" :style="aas">
-            <el-checkbox />
-            {{ msg }}
+            <label><el-checkbox /> {{ msg }}</label>
             <el-button
               type="primary"
               class="delete"
@@ -55,7 +54,7 @@
         <div class="bg-primary">
           <p>第4の領域</p>
           <p v-for="(msg, idx) in TODOMessage.four">
-            <el-checkbox /> {{ msg }}
+            <label><el-checkbox /> {{ msg }}</label>
             <el-button
               type="primary"
               class="delete"
