@@ -8,16 +8,16 @@ export const state = () => ({
 export const mutations = {
   insert(state, obj) {
     if (obj.num === 1) {
-      state.one.push(obj.message)
+      state.one.push({ message: obj.message, checked: false })
     }
     if (obj.num === 2) {
-      state.two.push(obj.message)
+      state.two.push({ message: obj.message, checked: false })
     }
     if (obj.num === 3) {
-      state.three.push(obj.message)
+      state.three.push({ message: obj.message, checked: false })
     }
     if (obj.num === 4) {
-      state.four.push(obj.message)
+      state.four.push({ message: obj.message, checked: false })
     }
   },
   remove(state, obj) {
