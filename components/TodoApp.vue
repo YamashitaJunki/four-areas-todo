@@ -32,7 +32,9 @@
             <div class="col-6 area-one">
               ●第1の領域●
               <div v-for="(msg, idx) in TODOMessage.one">
-                <label class="message"><el-checkbox /> {{ msg }} </label>
+                <label class="message"
+                  ><el-checkbox v-model="isDone" /> {{ msg }}
+                </label>
                 <el-button
                   type="primary"
                   class="delete"
@@ -46,7 +48,7 @@
             <div class="col-6 area-two">
               ●第2の領域●
               <div v-for="(msg, idx) in TODOMessage.two">
-                <label><el-checkbox /> {{ msg }}</label>
+                <label class="message"><el-checkbox /> {{ msg }}</label>
                 <el-button
                   type="primary"
                   class="delete"
@@ -62,7 +64,7 @@
             <div class="col-6 area-three">
               ●第3の領域●
               <div v-for="(msg, idx) in TODOMessage.three" :style="aas">
-                <label><el-checkbox /> {{ msg }}</label>
+                <label class="message"><el-checkbox /> {{ msg }}</label>
                 <el-button
                   type="primary"
                   class="delete"
@@ -70,13 +72,13 @@
                   round
                   @click="remove(`three`, idx)"
                   >削除</el-button
-                >>
+                >
               </div>
             </div>
             <div class="col-6 area-four">
               ●第4の領域●
               <div v-for="(msg, idx) in TODOMessage.four">
-                <label><el-checkbox /> {{ msg }}</label>
+                <label class="message"><el-checkbox /> {{ msg }}</label>
                 <el-button
                   type="primary"
                   class="delete"
@@ -115,6 +117,7 @@ export default {
   data: () => {
     return {
       message: '',
+      isDone: false,
     }
   },
   computed: {
@@ -157,6 +160,9 @@ export default {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0)
       })
     },
+    test() {
+      alert()
+    },
   },
 }
 </script>
@@ -197,6 +203,9 @@ export default {
   font-size: 1rem;
   border-radius: 30px;
 }
+.area-one::-webkit-scrollbar {
+  display: none;
+}
 .area-two {
   background-color: #fdd35c;
   padding: 40px;
@@ -205,6 +214,9 @@ export default {
   overflow: scroll;
   font-size: 1rem;
   border-radius: 30px;
+}
+.area-two::-webkit-scrollbar {
+  display: none;
 }
 .area-three {
   background-color: #00ac97;
@@ -215,6 +227,9 @@ export default {
   font-size: 1rem;
   border-radius: 30px;
 }
+.area-three::-webkit-scrollbar {
+  display: none;
+}
 .area-four {
   background-color: #00a1e9;
   padding: 40px;
@@ -224,10 +239,17 @@ export default {
   font-size: 1rem;
   border-radius: 30px;
 }
+.area-four::-webkit-scrollbar {
+  display: none;
+}
 .message {
   width: 300px;
   white-space: nowrap;
   overflow-x: scroll;
+}
+/*スクロールバー非表示（Chrome・Safari）*/
+.message::-webkit-scrollbar {
+  display: none;
 }
 
 .delete {
