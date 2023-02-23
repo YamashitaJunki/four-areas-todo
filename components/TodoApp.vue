@@ -1,112 +1,148 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <!-- Please remove this file from your project -->
 <template>
-  <div class="main">
-    <div class="top">
-      <div class="mb-3">
-        <div>
-          <h3>Enter task.</h3>
-          <el-input
-            v-model="message"
-            class="w-50 mt-5"
-            type="text"
-            placeholder="例:英語の勉強をする2"
-            @keypress.enter.native="submit()"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="d-flex">
-      <div class="important">
-        <div></div>
-        <div>&emsp;&emsp;&emsp;重要性&emsp;高</div>
-        <div>&emsp;&emsp;&emsp;重要性&emsp;低</div>
-      </div>
-      <div class="chart">
-        <div class="container-fluid">
-          <div class="row text-center mb-3">
-            <div class="col-6">緊急性&emsp;高</div>
-            <div class="col-6">緊急性&emsp;低</div>
-          </div>
+  <div class="body">
+    <div class="main">
+      <div id="warning" class="warning">
+        <div class="mb-3">タスクをリセットしますか？</div>
+        <div class="container">
           <div class="row">
-            <div class="col-6 area-one">
-              ●第1の領域●
-              <div v-for="(msg, idx) in TODOMessage.one">
-                <label class="message"
-                  ><el-checkbox v-model="isDone" /> {{ msg }}
-                </label>
-                <el-button
-                  type="primary"
-                  class="delete"
-                  size="small"
-                  round
-                  @click="remove(`one`, idx)"
-                  >削除</el-button
-                >
-              </div>
+            <div class="col">
+              <el-button type="danger" round class="w-50" @click="reset()"
+                >はい</el-button
+              >
             </div>
-            <div class="col-6 area-two">
-              ●第2の領域●
-              <div v-for="(msg, idx) in TODOMessage.two">
-                <label class="message"><el-checkbox /> {{ msg }}</label>
-                <el-button
-                  type="primary"
-                  class="delete"
-                  size="small"
-                  round
-                  @click="remove(`two`, idx)"
-                  >削除</el-button
-                >
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6 area-three">
-              ●第3の領域●
-              <div v-for="(msg, idx) in TODOMessage.three" :style="aas">
-                <label class="message"><el-checkbox /> {{ msg }}</label>
-                <el-button
-                  type="primary"
-                  class="delete"
-                  size="small"
-                  round
-                  @click="remove(`three`, idx)"
-                  >削除</el-button
-                >
-              </div>
-            </div>
-            <div class="col-6 area-four">
-              ●第4の領域●
-              <div v-for="(msg, idx) in TODOMessage.four">
-                <label class="message"><el-checkbox /> {{ msg }}</label>
-                <el-button
-                  type="primary"
-                  class="delete"
-                  size="small"
-                  round
-                  @click="remove(`four`, idx)"
-                  >削除</el-button
-                >
-              </div>
+            <div class="col">
+              <el-button type="primary" round class="w-50" @click="warning()"
+                >いいえ</el-button
+              >
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="top">
+        <div class="mb-3">
+          <div>
+            <h3>Enter task.</h3>
+            <el-input
+              v-model="message"
+              class="w-50 mt-5 shadow"
+              type="text"
+              placeholder="例:英語の勉強をする2"
+              @keypress.enter.native="submit()"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="important">
+          <div></div>
+          <div>&emsp;&emsp;&emsp;重要性&emsp;高</div>
+          <div>&emsp;&emsp;&emsp;重要性&emsp;低</div>
+        </div>
 
-    <div class="text-center mt-5">
-      <el-button type="danger" round @click="reset()"
-        >タスクのリセット</el-button
-      >
-    </div>
-    <hr />
-    <div class="row justify-content-center">
-      <el-button>
-        <a href="https://github.com/YamashitaJunki" target="_blank">
-          About Developer</a
+        <div class="chart">
+          <div class="container-fluid">
+            <div class="row text-center mb-3">
+              <div class="col-6">緊急性&emsp;高</div>
+              <div class="col-6">緊急性&emsp;低</div>
+            </div>
+            <div class="row">
+              <div class="col-6 area-one">
+                ●第1の領域●
+                <div v-for="(msg, idx) in TODOMessage.one">
+                  <label class="message"
+                    ><el-checkbox>
+                      <div>
+                        {{ msg.message }}
+                      </div>
+                    </el-checkbox>
+                  </label>
+                  <el-button
+                    type="primary"
+                    class="delete"
+                    size="small"
+                    round
+                    @click="remove(`one`, idx)"
+                    >削除</el-button
+                  >
+                </div>
+              </div>
+              <div class="col-6 area-two">
+                ●第2の領域●
+                <div v-for="(msg, idx) in TODOMessage.two">
+                  <label class="message"
+                    ><el-checkbox text-color="red">
+                      {{ msg.message }}</el-checkbox
+                    ></label
+                  >
+                  <el-button
+                    type="primary"
+                    class="delete"
+                    size="small"
+                    round
+                    @click="remove(`two`, idx)"
+                    >削除</el-button
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 area-three">
+                ●第3の領域●
+                <div v-for="(msg, idx) in TODOMessage.three">
+                  <label class="message"
+                    ><el-checkbox text-color="red">
+                      {{ msg.message }}</el-checkbox
+                    ></label
+                  >
+                  <el-button
+                    type="primary"
+                    class="delete"
+                    size="small"
+                    round
+                    @click="remove(`three`, idx)"
+                    >削除</el-button
+                  >
+                </div>
+              </div>
+              <div class="col-6 area-four">
+                ●第4の領域●
+                <div v-for="(msg, idx) in TODOMessage.four">
+                  <label class="message"
+                    ><el-checkbox text-color="red">
+                      {{ msg.message }}</el-checkbox
+                    ></label
+                  >
+                  <el-button
+                    type="primary"
+                    class="delete"
+                    size="small"
+                    round
+                    @click="remove(`four`, idx)"
+                    >削除</el-button
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <el-button type="danger" round class="mb-5" @click="warning()"
+          >タスクのリセット</el-button
         >
-      </el-button>
-      <div>&emsp;©&nbsp;2023&nbsp;YamashitaJunki</div>
+      </div>
+      <hr />
+      <div class="row justify-content-center">
+        <el-button>
+          <a href="https://github.com/YamashitaJunki" target="_blank">
+            About Developer</a
+          >
+        </el-button>
+        <div>&emsp;©&nbsp;2023&nbsp;YamashitaJunki</div>
+      </div>
     </div>
   </div>
 </template>
@@ -117,7 +153,8 @@ export default {
   data: () => {
     return {
       message: '',
-      isDone: false,
+      check: false,
+      value1: true,
     }
   },
   computed: {
@@ -140,6 +177,7 @@ export default {
         this.$store.commit('todo/insert', {
           message: taskMessage,
           num: taskNum,
+          checked: false,
         })
         this.message = ''
       } else {
@@ -154,6 +192,18 @@ export default {
     },
     reset() {
       this.$store.commit('todo/reset')
+      document.getElementById('warning').style.display = 'none'
+    },
+    warning() {
+      const p1 = document.getElementById('warning')
+
+      if (p1.style.display === 'block') {
+        // noneで非表示
+        p1.style.display = 'none'
+      } else {
+        // blockで表示
+        p1.style.display = 'block'
+      }
     },
     hankaku2Zenkaku(str) {
       return str.replace(/[０-９]/g, function (s) {
@@ -170,13 +220,34 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap');
 
+.body {
+  width: 100vw;
+}
 .main {
+  position: relative;
   padding: 50px;
   font-size: 1.5rem;
   width: 1300px;
   margin: auto;
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
+.warning {
+  color: white;
+  display: none;
+  margin: auto;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 1300px;
+  height: 100vh;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 400px;
+}
+
 .top {
   width: 100%;
   height: 200px;
@@ -260,5 +331,8 @@ label {
 }
 .bb {
   background-color: aqua;
+}
+.done {
+  text-decoration: line-through;
 }
 </style>
