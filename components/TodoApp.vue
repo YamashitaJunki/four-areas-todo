@@ -16,59 +16,95 @@
         </div>
       </div>
     </div>
-    <div class="w-100 text-center">緊急性</div>
-    <p class="arrow"></p>
     <div class="d-flex">
-      <div class="arr"></div>
-      <div class="box">
-        <div class="bg-danger">
-          <p>第１の領域</p>
-          <p v-for="(msg, idx) in TODOMessage.one">
-            <label><el-checkbox /> {{ msg }}</label>
-            <el-button type="primary" class="delete" @click="remove(`one`, idx)"
-              >削除</el-button
-            >
-          </p>
-        </div>
-        <div class="bg-warning">
-          <p>第2の領域</p>
-          <p v-for="(msg, idx) in TODOMessage.two">
-            <label><el-checkbox /> {{ msg }}</label>
-            <el-button type="primary" class="delete" @click="remove(`two`, idx)"
-              >削除</el-button
-            >
-          </p>
-        </div>
-        <div class="bg-success">
-          <p>第3の領域</p>
-          <p v-for="(msg, idx) in TODOMessage.three" :style="aas">
-            <label><el-checkbox /> {{ msg }}</label>
-            <el-button
-              type="primary"
-              class="delete"
-              @click="remove(`three`, idx)"
-              >削除</el-button
-            >
-          </p>
-        </div>
-        <div class="bg-primary">
-          <p>第4の領域</p>
-          <p v-for="(msg, idx) in TODOMessage.four">
-            <label><el-checkbox /> {{ msg }}</label>
-            <el-button
-              type="primary"
-              class="delete"
-              @click="remove(`four`, idx)"
-              >削除</el-button
-            >
-          </p>
+      <div class="important">
+        <div></div>
+        <div>&emsp;&emsp;&emsp;重要性&emsp;高</div>
+        <div>&emsp;&emsp;&emsp;重要性&emsp;低</div>
+      </div>
+      <div class="chart">
+        <div class="container-fluid">
+          <div class="row text-center mb-3">
+            <div class="col-6">緊急性&emsp;高</div>
+            <div class="col-6">緊急性&emsp;低</div>
+          </div>
+          <div class="row">
+            <div class="col-6 area-one">
+              ●第1の領域●
+              <div v-for="(msg, idx) in TODOMessage.one">
+                <label class="message"><el-checkbox /> {{ msg }} </label>
+                <el-button
+                  type="primary"
+                  class="delete"
+                  size="small"
+                  round
+                  @click="remove(`one`, idx)"
+                  >削除</el-button
+                >
+              </div>
+            </div>
+            <div class="col-6 area-two">
+              ●第2の領域●
+              <div v-for="(msg, idx) in TODOMessage.two">
+                <label><el-checkbox /> {{ msg }}</label>
+                <el-button
+                  type="primary"
+                  class="delete"
+                  size="small"
+                  round
+                  @click="remove(`two`, idx)"
+                  >削除</el-button
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 area-three">
+              ●第3の領域●
+              <div v-for="(msg, idx) in TODOMessage.three" :style="aas">
+                <label><el-checkbox /> {{ msg }}</label>
+                <el-button
+                  type="primary"
+                  class="delete"
+                  size="small"
+                  round
+                  @click="remove(`three`, idx)"
+                  >削除</el-button
+                >>
+              </div>
+            </div>
+            <div class="col-6 area-four">
+              ●第4の領域●
+              <div v-for="(msg, idx) in TODOMessage.four">
+                <label><el-checkbox /> {{ msg }}</label>
+                <el-button
+                  type="primary"
+                  class="delete"
+                  size="small"
+                  round
+                  @click="remove(`four`, idx)"
+                  >削除</el-button
+                >
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="text-center mt-5">
       <el-button type="danger" round @click="reset()"
         >タスクのリセット</el-button
       >
+    </div>
+    <hr />
+    <div class="row justify-content-center">
+      <el-button>
+        <a href="https://github.com/YamashitaJunki" target="_blank">
+          About Developer</a
+        >
+      </el-button>
+      <div>&emsp;©&nbsp;2023&nbsp;YamashitaJunki</div>
     </div>
   </div>
 </template>
@@ -126,68 +162,74 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap');
+
 .main {
-  padding: 100px;
+  padding: 50px;
   font-size: 1.5rem;
+  width: 1300px;
+  margin: auto;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
 }
 .top {
   width: 100%;
   height: 200px;
   text-align: center;
 }
-.box {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
+
+.important div:nth-child(2),
+.important div:nth-child(3) {
+  height: 300px;
+  writing-mode: vertical-rl;
+  text-align: center;
 }
-.box div {
+.chart {
+  width: 90%;
+  transform: translate(25px);
+}
+
+.area-one {
+  background-color: #ea5550;
   padding: 40px;
   width: 45%;
-  height: 400px;
+  height: 300px;
   overflow: scroll;
+  font-size: 1rem;
+  border-radius: 30px;
 }
-.box div::-webkit-scrollbar {
-  display: none;
+.area-two {
+  background-color: #fdd35c;
+  padding: 40px;
+  width: 45%;
+  height: 300px;
+  overflow: scroll;
+  font-size: 1rem;
+  border-radius: 30px;
 }
-.arrow {
-  display: inline-block;
-  height: 20px;
-  width: 100%;
-  background-color: #5bc0de;
-  position: relative;
-  top: 0px;
+.area-three {
+  background-color: #00ac97;
+  padding: 40px;
+  width: 45%;
+  height: 300px;
+  overflow: scroll;
+  font-size: 1rem;
+  border-radius: 30px;
+}
+.area-four {
+  background-color: #00a1e9;
+  padding: 40px;
+  width: 45%;
+  height: 300px;
+  overflow: scroll;
+  font-size: 1rem;
+  border-radius: 30px;
+}
+.message {
+  width: 300px;
+  white-space: nowrap;
+  overflow-x: scroll;
 }
 
-.arrow:before {
-  position: absolute;
-  content: '';
-  width: 0;
-  height: 0;
-  border: 45px solid transparent;
-  border-left: 60px solid #5bc0de;
-  left: 100%;
-  top: -37px;
-}
-.arr {
-  display: inline-block;
-  width: 20px;
-  background-color: #5bc0de;
-  position: relative;
-  top: 0px;
-}
-
-.arr:before {
-  position: absolute;
-  content: '';
-  width: 0;
-  height: 0;
-  border: 45px solid transparent;
-  border-left: 60px solid #5bc0de;
-  left: 100%;
-  top: 800px;
-  transform: rotate(90deg) translate(0px, 63px);
-}
 .delete {
   float: right;
 }
