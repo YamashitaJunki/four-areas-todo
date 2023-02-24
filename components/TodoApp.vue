@@ -55,6 +55,7 @@
                     ><el-checkbox
                       :id="`areaOne-${idx}`"
                       @change="check(`one`, idx)"
+                      :value="msg.checked"
                     >
                       <div :class="{ done: msg.checked }">
                         {{ msg.message }}
@@ -84,6 +85,7 @@
                     ><el-checkbox
                       :id="`areaTwo-${idx}`"
                       @change="check(`two`, idx)"
+                      :value="msg.checked"
                     >
                       <div :class="{ done: msg.checked }">
                         {{ msg.message }}
@@ -115,6 +117,7 @@
                   <label class="message"
                     ><el-checkbox
                       :id="`areaThree-${idx}`"
+                      :value="msg.checked"
                       @change="check(`three`, idx)"
                     >
                       <div :class="{ done: msg.checked }">
@@ -144,6 +147,7 @@
                   <label class="message"
                     ><el-checkbox
                       :id="`areaFour-${idx}`"
+                      :value="msg.checked"
                       @change="check(`four`, idx)"
                     >
                       <div :class="{ done: msg.checked }">
