@@ -1,35 +1,55 @@
 export const state = () => ({
-  one: [],
-  two: [],
-  three: [],
-  four: [],
+  task: {
+    thisIsTestObject: {
+      one: [],
+      two: [],
+      three: [],
+      four: [],
+    },
+  },
 })
 
 export const mutations = {
+  enterTitle(state, obj) {
+    state.task[obj.title] = obj.area
+  },
   insert(state, obj) {
     if (obj.num === 1) {
-      state.one.push({ message: obj.message, checked: false })
+      state.task[obj.title].one.push({
+        message: obj.message,
+        checked: false,
+      })
     }
     if (obj.num === 2) {
-      state.two.push({ message: obj.message, checked: false })
+      state.task[obj.title].two.push({
+        message: obj.message,
+        checked: false,
+      })
     }
     if (obj.num === 3) {
-      state.three.push({ message: obj.message, checked: false })
+      state.task[obj.title].three.push({
+        message: obj.message,
+        checked: false,
+      })
     }
     if (obj.num === 4) {
-      state.four.push({ message: obj.message, checked: false })
+      state.task[obj.title].four.push({
+        message: obj.message,
+        checked: false,
+      })
     }
   },
   remove(state, obj) {
     const num = obj.number
-    state[num].splice(obj.index, 1)
+    state.task[obj.title][num].splice(obj.index, 1)
   },
-  reset(state) {
-    Object.keys(state).forEach((data) => {
-      state[data] = []
+  reset(state, title) {
+    Object.keys(state.task[title]).forEach((data) => {
+      state.task[title][data] = []
     })
   },
   changeCheck(state, obj) {
-    state[obj.area][obj.idx].checked = !state[obj.area][obj.idx].checked
+    state.task[obj.title][obj.area][obj.idx].checked =
+      !state.task[obj.title][obj.area][obj.idx].checked
   },
 }

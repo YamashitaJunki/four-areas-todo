@@ -20,6 +20,38 @@
           </div>
         </div>
       </div>
+      <!-- バグ：早急に手配が必要 -->
+      <div
+        id="title"
+        :class="[taskNum.length == 1 ? 'complete' : 'uncomplete']"
+        class="title"
+      >
+        <div>タスク題名を入力</div>
+        <el-input
+          v-model="title"
+          class="w-50 mt-5"
+          type="text"
+          placeholder=""
+        />
+        <el-button type="warning" @click="enterTitle()"> 決定</el-button>
+      </div>
+      <div id="titleList" class="titleList">
+        <div>タイトルを選択してください</div>
+        <div v-for="todoTitle in TODOList">
+          <el-button
+            v-if="title != `thisIsTestObject`"
+            @click="titleChange(todoTitle)"
+          >
+            <div>
+              {{ todoTitle }}
+            </div>
+          </el-button>
+        </div>
+        <div>
+          <el-button @click="createTask()"> タスクを作成 </el-button>
+        </div>
+      </div>
+
       <div class="top">
         <div class="mb-3">
           <div>
@@ -33,6 +65,12 @@
             />
           </div>
         </div>
+        <div>
+          <el-button @click="displayTaskList()"> タスクリストを表示 </el-button>
+        </div>
+      </div>
+      <div>
+        <h1 class="text-center">{{ TODOMessage.title }}</h1>
       </div>
       <div class="d-flex">
         <div class="important">
@@ -54,10 +92,10 @@
                   <label class="message"
                     ><el-checkbox
                       :id="`areaOne-${idx}`"
-                      @change="check(`one`, idx)"
                       :value="msg.checked"
+                      @change="check(`one`, idx)"
                     >
-                      <div :class="{ done: msg.checked }">
+                      <div :class="{ done: msg.checked }" class="text-dark">
                         {{ msg.message }}
                       </div>
                     </el-checkbox>
@@ -84,10 +122,10 @@
                   <label class="message"
                     ><el-checkbox
                       :id="`areaTwo-${idx}`"
-                      @change="check(`two`, idx)"
                       :value="msg.checked"
+                      @change="check(`two`, idx)"
                     >
-                      <div :class="{ done: msg.checked }">
+                      <div :class="{ done: msg.checked }" class="text-dark">
                         {{ msg.message }}
                       </div>
                     </el-checkbox>
@@ -120,7 +158,7 @@
                       :value="msg.checked"
                       @change="check(`three`, idx)"
                     >
-                      <div :class="{ done: msg.checked }">
+                      <div :class="{ done: msg.checked }" class="text-dark">
                         {{ msg.message }}
                       </div>
                     </el-checkbox>
@@ -150,7 +188,7 @@
                       :value="msg.checked"
                       @change="check(`four`, idx)"
                     >
-                      <div :class="{ done: msg.checked }">
+                      <div :class="{ done: msg.checked }" class="text-dark">
                         {{ msg.message }}
                       </div>
                     </el-checkbox>
@@ -200,25 +238,66 @@ export default {
   data: () => {
     return {
       message: '',
+      title: '',
     }
   },
   computed: {
     TODOMessage: function () {
+      let title
+      if (this.$route.query.title) {
+        title = this.$route.query.title
+      } else {
+        title = 'thisIsTestObject'
+      }
       const msg = {
-        one: this.$store.state.todo.one,
-        two: this.$store.state.todo.two,
-        three: this.$store.state.todo.three,
-        four: this.$store.state.todo.four,
+        title,
+        one: this.$store.state.todo.task[title].one,
+        two: this.$store.state.todo.task[title].two,
+        three: this.$store.state.todo.task[title].three,
+        four: this.$store.state.todo.task[title].four,
       }
       return msg
     },
+    TODOList: function () {
+      return Object.keys(this.$store.state.todo.task)
+    },
+    task: function () {
+      let taskItems = 0
+      Object.keys(this.$store.state.todo).forEach((key) => {
+        taskItems += this.$store.state.todo[key].length
+      })
+
+      return taskItems
+    },
+    taskNum() {
+      return Object.keys(this.$store.state.todo.task)
+    },
+  },
+  mounted() {
+    const num = Object.keys(this.$store.state.todo.task)
+    if (num.length === 1) {
+      document.getElementById('titleList').style.display = 'none'
+      document.getElementById('title').style.display = 'block'
+    }
   },
 
   methods: {
+    enterTitle() {
+      const p1 = document.getElementById('title')
+      p1.style.display = 'none'
+      const taskObj = {
+        title: this.title,
+        area: { one: [], two: [], three: [], four: [] },
+      }
+
+      this.$store.commit('todo/enterTitle', taskObj)
+      this.$router.push({ path: '/todo', query: { title: this.title } })
+    },
     check(area, idx) {
       this.$store.commit('todo/changeCheck', {
         area,
         idx,
+        title: this.$route.query.title,
       })
     },
     submit() {
@@ -227,6 +306,7 @@ export default {
       if (taskNum <= 4 && taskNum >= 1) {
         const taskMessage = this.message.slice(0, -1)
         this.$store.commit('todo/insert', {
+          title: this.$route.query.title,
           message: taskMessage,
           num: taskNum,
           checked: false,
@@ -238,13 +318,15 @@ export default {
     },
     remove(num, idx) {
       this.$store.commit('todo/remove', {
+        title: this.$route.query.title,
         number: num,
         index: idx,
       })
     },
     reset() {
-      this.$store.commit('todo/reset')
+      this.$store.commit('todo/reset', this.$route.query.title)
       document.getElementById('warning').style.display = 'none'
+      this.title = ''
     },
     warning() {
       const p1 = document.getElementById('warning')
@@ -261,6 +343,26 @@ export default {
       return str.replace(/[０-９]/g, function (s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0)
       })
+    },
+    titleChange(title) {
+      // eslint-disable-next-line object-shorthand
+      this.$router.push({ path: '/todo', query: { title: title } })
+      const p1 = document.getElementById('titleList')
+
+      if (p1.style.display === 'block') {
+        // noneで非表示
+        p1.style.display = 'none'
+      } else {
+        // blockで表示
+        p1.style.display = 'block'
+      }
+    },
+    displayTaskList() {
+      const p1 = document.getElementById('titleList')
+      p1.style.display = 'block'
+    },
+    createTask() {
+      document.getElementById('titleList').style.display = 'none'
     },
   },
 }
@@ -289,6 +391,36 @@ export default {
   width: 1300px;
   height: 100vh;
   z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 400px;
+}
+.title {
+  color: white;
+  margin: auto;
+  position: absolute;
+  background-color: rgba(0, 0, 0);
+  width: 1300px;
+  height: 100%;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 400px;
+}
+.titleList {
+  color: white;
+  margin: auto;
+  position: absolute;
+  background-color: rgba(0, 0, 0);
+  width: 1300px;
+  height: 100%;
+  z-index: 3;
   left: 0;
   right: 0;
   top: 0;
@@ -368,7 +500,6 @@ export default {
   overflow-x: scroll;
 }
 .message div {
-  background-color: beige;
   width: 300px;
 }
 /*スクロールバー非表示（Chrome・Safari）*/
@@ -388,11 +519,15 @@ label {
 .complete {
   display: block;
   float: right;
+  color: rgb(255, 255, 255);
+  -webkit-text-stroke: 0.7px #0b0000;
+  text-shadow: 0.5px #120101;
 }
 .uncomplete {
   display: none;
 }
 .done {
   text-decoration: line-through;
+  text-decoration-color: rgb(255, 255, 255);
 }
 </style>
