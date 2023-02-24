@@ -29,4 +29,7 @@ export const mutations = {
       state[data] = []
     })
   },
+  changeCheck(state, obj) {
+    state[obj.area][obj.idx].checked = !state[obj.area][obj.idx].checked
+  },
 }

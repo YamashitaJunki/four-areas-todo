@@ -50,10 +50,13 @@
             <div class="row">
               <div class="col-6 area-one">
                 ●第1の領域●
-                <div v-for="(msg, idx) in TODOMessage.one">
+                <div v-for="(msg, idx) in TODOMessage.one" :key="idx">
                   <label class="message"
-                    ><el-checkbox>
-                      <div>
+                    ><el-checkbox
+                      :id="`areaOne-${idx}`"
+                      @change="check(`one`, idx)"
+                    >
+                      <div :class="{ done: msg.checked }">
                         {{ msg.message }}
                       </div>
                     </el-checkbox>
@@ -66,16 +69,28 @@
                     @click="remove(`one`, idx)"
                     >削除</el-button
                   >
+                  <div
+                    class="delete"
+                    :class="[msg.checked ? 'complete' : 'uncomplete']"
+                  >
+                    complete!!&emsp;
+                  </div>
                 </div>
               </div>
               <div class="col-6 area-two">
                 ●第2の領域●
                 <div v-for="(msg, idx) in TODOMessage.two">
                   <label class="message"
-                    ><el-checkbox text-color="red">
-                      {{ msg.message }}</el-checkbox
-                    ></label
-                  >
+                    ><el-checkbox
+                      :id="`areaTwo-${idx}`"
+                      @change="check(`two`, idx)"
+                    >
+                      <div :class="{ done: msg.checked }">
+                        {{ msg.message }}
+                      </div>
+                    </el-checkbox>
+                  </label>
+
                   <el-button
                     type="primary"
                     class="delete"
@@ -84,6 +99,12 @@
                     @click="remove(`two`, idx)"
                     >削除</el-button
                   >
+                  <div
+                    class="delete"
+                    :class="[msg.checked ? 'complete' : 'uncomplete']"
+                  >
+                    complete!!&emsp;
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,10 +113,15 @@
                 ●第3の領域●
                 <div v-for="(msg, idx) in TODOMessage.three">
                   <label class="message"
-                    ><el-checkbox text-color="red">
-                      {{ msg.message }}</el-checkbox
-                    ></label
-                  >
+                    ><el-checkbox
+                      :id="`areaThree-${idx}`"
+                      @change="check(`three`, idx)"
+                    >
+                      <div :class="{ done: msg.checked }">
+                        {{ msg.message }}
+                      </div>
+                    </el-checkbox>
+                  </label>
                   <el-button
                     type="primary"
                     class="delete"
@@ -104,16 +130,27 @@
                     @click="remove(`three`, idx)"
                     >削除</el-button
                   >
+                  <div
+                    class="delete"
+                    :class="[msg.checked ? 'complete' : 'uncomplete']"
+                  >
+                    complete!!&emsp;
+                  </div>
                 </div>
               </div>
               <div class="col-6 area-four">
                 ●第4の領域●
                 <div v-for="(msg, idx) in TODOMessage.four">
                   <label class="message"
-                    ><el-checkbox text-color="red">
-                      {{ msg.message }}</el-checkbox
-                    ></label
-                  >
+                    ><el-checkbox
+                      :id="`areaFour-${idx}`"
+                      @change="check(`four`, idx)"
+                    >
+                      <div :class="{ done: msg.checked }">
+                        {{ msg.message }}
+                      </div>
+                    </el-checkbox>
+                  </label>
                   <el-button
                     type="primary"
                     class="delete"
@@ -122,6 +159,12 @@
                     @click="remove(`four`, idx)"
                     >削除</el-button
                   >
+                  <div
+                    class="delete"
+                    :class="[msg.checked ? 'complete' : 'uncomplete']"
+                  >
+                    complete!!&emsp;
+                  </div>
                 </div>
               </div>
             </div>
@@ -153,8 +196,6 @@ export default {
   data: () => {
     return {
       message: '',
-      check: false,
-      value1: true,
     }
   },
   computed: {
@@ -168,7 +209,14 @@ export default {
       return msg
     },
   },
+
   methods: {
+    check(area, idx) {
+      this.$store.commit('todo/changeCheck', {
+        area,
+        idx,
+      })
+    },
     submit() {
       const num = String(this.message.slice(-1))
       const taskNum = Number(this.hankaku2Zenkaku(num))
@@ -209,9 +257,6 @@ export default {
       return str.replace(/[０-９]/g, function (s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0)
       })
-    },
-    test() {
-      alert()
     },
   },
 }
@@ -266,7 +311,7 @@ export default {
 }
 
 .area-one {
-  background-color: #ea5550;
+  background-color: rgb(235, 87, 82);
   padding: 40px;
   width: 45%;
   height: 300px;
@@ -318,6 +363,10 @@ export default {
   white-space: nowrap;
   overflow-x: scroll;
 }
+.message div {
+  background-color: beige;
+  width: 300px;
+}
 /*スクロールバー非表示（Chrome・Safari）*/
 .message::-webkit-scrollbar {
   display: none;
@@ -331,6 +380,13 @@ label {
 }
 .bb {
   background-color: aqua;
+}
+.complete {
+  display: block;
+  float: right;
+}
+.uncomplete {
+  display: none;
 }
 .done {
   text-decoration: line-through;
