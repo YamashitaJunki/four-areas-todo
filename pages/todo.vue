@@ -471,6 +471,7 @@ export default {
     backTask() {
       document.getElementById('title-list').style.display = 'none'
     },
+    boolCheck() {},
   },
 }
 </script>
