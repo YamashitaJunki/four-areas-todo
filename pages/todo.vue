@@ -3,246 +3,262 @@
 <template>
   <div class="body">
     <div class="main">
-      <div id="create-title" class="create-title">
-        <div>タスク題名を入力</div>
-        <el-input
-          v-model="title"
-          class="w-50 mt-5"
-          type="text"
-          placeholder=""
-        />
-        <el-button type="warning" @click="enterTitle()"> 決定</el-button>
-        <div v-if="TODOTitleList.length >= 1" class="mt-5">
-          <el-button size="small" @click="backTODOList()">
-            タスクリストに戻る
-          </el-button>
-        </div>
-      </div>
-      <div id="title-list" class="title-list">
-        <div>タイトルを選択してください</div>
-        <div
-          v-for="todoTitle in TODOTitleList"
-          class="mt-3 title-name text-info"
-        >
-          <div @click="titleChange(todoTitle)">
-            <div>●{{ todoTitle }}</div>
+      <div class="header content">
+        <div class="row">
+          <div class="text-left col">FOUR AREAS TODO</div>
+          <div class="text-right col">
+            <el-button @click="displayTaskList()">
+              タスクリストを表示
+            </el-button>
           </div>
         </div>
-        <hr />
-        <div class="mt-5">
-          <el-button type="success" size="mini" plain @click="createTask()">
-            タスクを作成
-          </el-button>
-          <el-button
-            v-if="$route.query.title"
-            type="success"
-            size="mini"
-            plain
-            @click="backTask()"
+      </div>
+      <div class="mt-5">
+        <div id="create-title" class="create-title">
+          <div>タスク題名を入力</div>
+          <el-input
+            v-model="title"
+            class="w-50 mt-5"
+            type="text"
+            placeholder=""
+          />
+          <el-button type="warning" @click="enterTitle()"> 決定</el-button>
+          <div v-if="TODOTitleList.length >= 1" class="mt-5">
+            <el-button size="small" @click="backTODOList()">
+              タスクリストに戻る
+            </el-button>
+          </div>
+        </div>
+        <div id="title-list" class="title-list">
+          <h2 class="text-primary">タスクを選択してください</h2>
+          <hr />
+          <div
+            v-for="todoTitle in TODOTitleList"
+            class="mt-3 title-name text-info"
           >
-            タスクに戻る
-          </el-button>
-        </div>
-      </div>
-      <div id="warning" class="warning">
-        <div class="mb-3">
-          タスクをリセットしますか？
-          <div class="text-danger fs-5">この操作は取り消しできません</div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <el-button type="danger" round class="w-50" @click="reset()"
-                >はい</el-button
-              >
+            <div @click="titleChange(todoTitle)">
+              <div>●{{ todoTitle }}</div>
             </div>
-            <div class="col">
-              <el-button type="primary" round class="w-50" @click="warning()"
-                >いいえ</el-button
-              >
+          </div>
+          <hr />
+          <div class="mt-5">
+            <el-button type="success" size="mini" plain @click="createTask()">
+              新しいタスクを作成
+            </el-button>
+            <el-button
+              v-if="$route.query.title"
+              type="success"
+              size="mini"
+              plain
+              @click="backTask()"
+            >
+              現在のタスクに戻る
+            </el-button>
+          </div>
+        </div>
+        <div id="warning" class="warning">
+          <div class="mb-3">
+            タスクをリセットしますか？
+            <div class="text-danger fs-5">この操作は取り消しできません</div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <el-button type="danger" round class="w-50" @click="reset()"
+                  >はい</el-button
+                >
+              </div>
+              <div class="col">
+                <el-button type="primary" round class="w-50" @click="warning()"
+                  >いいえ</el-button
+                >
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div id="delete-task" class="delete-task">
-        <div class="mb-3">
-          【{{ TODOMessage.title }}】タスクを削除しますか？
-          <div class="text-danger fs-5">この操作は取り消しできません</div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <el-button type="danger" round class="w-50" @click="deleteTask()"
-                >はい</el-button
-              >
-            </div>
-            <div class="col">
-              <el-button
-                type="primary"
-                round
-                class="w-50"
-                @click="displayDelete()"
-                >いいえ</el-button
-              >
+        <div id="delete-task" class="delete-task">
+          <div class="mb-3">
+            【{{ TODOMessage.title }}】タスクを削除しますか？
+            <div class="text-danger fs-5">この操作は取り消しできません</div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <el-button
+                  type="danger"
+                  round
+                  class="w-50"
+                  @click="deleteTask()"
+                  >はい</el-button
+                >
+              </div>
+              <div class="col">
+                <el-button
+                  type="primary"
+                  round
+                  class="w-50"
+                  @click="displayDelete()"
+                  >いいえ</el-button
+                >
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="top">
-        <div class="mb-3">
-          <div>
-            <h3>Enter task.</h3>
-            <el-input
-              v-model="message"
-              class="w-50 mt-5 shadow"
-              type="text"
-              placeholder="例:英語の勉強をする2"
-              @keypress.enter.native="submit()"
-            />
+        <div class="top">
+          <div class="mb-3">
+            <div>
+              <h3>Enter task.</h3>
+
+              <el-input
+                v-model="message"
+                class="w-50 mt-5 shadow"
+                type="text"
+                placeholder="例:英語の勉強をする2"
+                @keypress.enter.native="submit()"
+              />
+            </div>
           </div>
         </div>
         <div>
-          <el-button @click="displayTaskList()"> タスクリストを表示 </el-button>
+          <h1 class="text-center mt-5 mb-5">{{ TODOMessage.title }}</h1>
         </div>
-      </div>
-      <div>
-        <h1 class="text-center">{{ TODOMessage.title }}</h1>
-      </div>
-      <div class="d-flex">
-        <div class="important">
-          <div></div>
-          <div>&emsp;&emsp;&emsp;重要性&emsp;高</div>
-          <div>&emsp;&emsp;&emsp;重要性&emsp;低</div>
-        </div>
+        <div class="d-flex">
+          <div class="important">
+            <div></div>
+            <div>&emsp;&emsp;&emsp;重要性&emsp;高</div>
+            <div>&emsp;&emsp;&emsp;重要性&emsp;低</div>
+          </div>
 
-        <div class="chart">
-          <div class="container-fluid">
-            <div class="row text-center mb-3">
-              <div class="col-6">緊急性&emsp;高</div>
-              <div class="col-6">緊急性&emsp;低</div>
-            </div>
-            <div class="row">
-              <div class="col-6 area-one">
-                ●第1の領域●
-                <div v-for="(msg, idx) in TODOMessage.one" :key="idx">
-                  <label class="message"
-                    ><el-checkbox
-                      :id="`areaOne-${idx}`"
-                      :value="msg.checked"
-                      @change="check(`one`, idx)"
+          <div class="chart">
+            <div class="container-fluid">
+              <div class="row text-center mb-3">
+                <div class="col-6">緊急性&emsp;高</div>
+                <div class="col-6">緊急性&emsp;低</div>
+              </div>
+              <div class="row">
+                <div class="col-6 area-one">
+                  ●第1の領域●
+                  <div v-for="(msg, idx) in TODOMessage.one" :key="idx">
+                    <label class="message"
+                      ><el-checkbox
+                        :id="`areaOne-${idx}`"
+                        :value="msg.checked"
+                        @change="check(`one`, idx)"
+                      >
+                        <div :class="{ done: msg.checked }" class="text-dark">
+                          {{ msg.message }}
+                          {{ msg.checked }}
+                        </div>
+                      </el-checkbox>
+                    </label>
+                    <el-button
+                      type="primary"
+                      class="delete"
+                      size="small"
+                      round
+                      @click="remove(`one`, idx)"
+                      >削除</el-button
                     >
-                      <div :class="{ done: msg.checked }" class="text-dark">
-                        {{ msg.message }}
-                      </div>
-                    </el-checkbox>
-                  </label>
-                  <el-button
-                    type="primary"
-                    class="delete"
-                    size="small"
-                    round
-                    @click="remove(`one`, idx)"
-                    >削除</el-button
-                  >
-                  <div
-                    class="delete"
-                    :class="[msg.checked ? 'complete' : 'uncomplete']"
-                  >
-                    complete!!&emsp;
+                    <div
+                      class="delete"
+                      :class="[msg.checked ? 'complete' : 'uncomplete']"
+                    >
+                      complete!!&emsp;
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-6 area-two">
-                ●第2の領域●
-                <div v-for="(msg, idx) in TODOMessage.two">
-                  <label class="message"
-                    ><el-checkbox
-                      :id="`areaTwo-${idx}`"
-                      :value="msg.checked"
-                      @change="check(`two`, idx)"
-                    >
-                      <div :class="{ done: msg.checked }" class="text-dark">
-                        {{ msg.message }}
-                      </div>
-                    </el-checkbox>
-                  </label>
+                <div class="col-6 area-two">
+                  ●第2の領域●
+                  <div v-for="(msg, idx) in TODOMessage.two">
+                    <label class="message"
+                      ><el-checkbox
+                        :id="`areaTwo-${idx}`"
+                        :value="msg.checked"
+                        @change="check(`two`, idx)"
+                      >
+                        <div :class="{ done: msg.checked }" class="text-dark">
+                          {{ msg.message }}
+                        </div>
+                      </el-checkbox>
+                    </label>
 
-                  <el-button
-                    type="primary"
-                    class="delete"
-                    size="small"
-                    round
-                    @click="remove(`two`, idx)"
-                    >削除</el-button
-                  >
-                  <div
-                    class="delete"
-                    :class="[msg.checked ? 'complete' : 'uncomplete']"
-                  >
-                    complete!!&emsp;
+                    <el-button
+                      type="primary"
+                      class="delete"
+                      size="small"
+                      round
+                      @click="remove(`two`, idx)"
+                      >削除</el-button
+                    >
+                    <div
+                      class="delete"
+                      :class="[msg.checked ? 'complete' : 'uncomplete']"
+                    >
+                      complete!!&emsp;
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-6 area-three">
-                ●第3の領域●
-                <div v-for="(msg, idx) in TODOMessage.three">
-                  <label class="message"
-                    ><el-checkbox
-                      :id="`areaThree-${idx}`"
-                      :value="msg.checked"
-                      @change="check(`three`, idx)"
+              <div class="row">
+                <div class="col-6 area-three">
+                  ●第3の領域●
+                  <div v-for="(msg, idx) in TODOMessage.three">
+                    <label class="message"
+                      ><el-checkbox
+                        :id="`areaThree-${idx}`"
+                        :value="msg.checked"
+                        @change="check(`three`, idx)"
+                      >
+                        <div :class="{ done: msg.checked }" class="text-dark">
+                          {{ msg.message }}
+                        </div>
+                      </el-checkbox>
+                    </label>
+                    <el-button
+                      type="primary"
+                      class="delete"
+                      size="small"
+                      round
+                      @click="remove(`three`, idx)"
+                      >削除</el-button
                     >
-                      <div :class="{ done: msg.checked }" class="text-dark">
-                        {{ msg.message }}
-                      </div>
-                    </el-checkbox>
-                  </label>
-                  <el-button
-                    type="primary"
-                    class="delete"
-                    size="small"
-                    round
-                    @click="remove(`three`, idx)"
-                    >削除</el-button
-                  >
-                  <div
-                    class="delete"
-                    :class="[msg.checked ? 'complete' : 'uncomplete']"
-                  >
-                    complete!!&emsp;
+                    <div
+                      class="delete"
+                      :class="[msg.checked ? 'complete' : 'uncomplete']"
+                    >
+                      complete!!&emsp;
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-6 area-four">
-                ●第4の領域●
-                <div v-for="(msg, idx) in TODOMessage.four">
-                  <label class="message"
-                    ><el-checkbox
-                      :id="`areaFour-${idx}`"
-                      :value="msg.checked"
-                      @change="check(`four`, idx)"
+                <div class="col-6 area-four">
+                  ●第4の領域●
+                  <div v-for="(msg, idx) in TODOMessage.four">
+                    <label class="message"
+                      ><el-checkbox
+                        :id="`areaFour-${idx}`"
+                        :value="msg.checked"
+                        @change="check(`four`, idx)"
+                      >
+                        <div :class="{ done: msg.checked }" class="text-dark">
+                          {{ msg.message }}
+                        </div>
+                      </el-checkbox>
+                    </label>
+                    <el-button
+                      type="primary"
+                      class="delete"
+                      size="small"
+                      round
+                      @click="remove(`four`, idx)"
+                      >削除</el-button
                     >
-                      <div :class="{ done: msg.checked }" class="text-dark">
-                        {{ msg.message }}
-                      </div>
-                    </el-checkbox>
-                  </label>
-                  <el-button
-                    type="primary"
-                    class="delete"
-                    size="small"
-                    round
-                    @click="remove(`four`, idx)"
-                    >削除</el-button
-                  >
-                  <div
-                    class="delete"
-                    :class="[msg.checked ? 'complete' : 'uncomplete']"
-                  >
-                    complete!!&emsp;
+                    <div
+                      class="delete"
+                      :class="[msg.checked ? 'complete' : 'uncomplete']"
+                    >
+                      complete!!&emsp;
+                    </div>
                   </div>
                 </div>
               </div>
@@ -279,6 +295,7 @@ export default {
     return {
       message: '',
       title: '',
+      taskData: {},
     }
   },
   computed: {
@@ -326,6 +343,7 @@ export default {
   },
 
   methods: {
+    test() {},
     enterTitle() {
       const taskObj = {
         title: this.title,
@@ -380,6 +398,10 @@ export default {
         // blockで表示
         p1.style.display = 'block'
       }
+      window.scroll({
+        top: 0,
+        behavior: 'auto',
+      })
     },
     displayDelete() {
       const p1 = document.getElementById('delete-task')
@@ -391,6 +413,10 @@ export default {
         // blockで表示
         p1.style.display = 'block'
       }
+      window.scroll({
+        top: 0,
+        behavior: 'auto',
+      })
     },
     hankaku2Zenkaku(str) {
       return str.replace(/[０-９]/g, function (s) {
@@ -411,8 +437,14 @@ export default {
       }
     },
     displayTaskList() {
-      const p1 = document.getElementById('title-list')
-      p1.style.display = 'block'
+      document.getElementById('title-list').style.display = 'block'
+      document.getElementById('create-title').style.display = 'none'
+      document.getElementById('delete-task').style.display = 'none'
+      document.getElementById('warning').style.display = 'none'
+      window.scroll({
+        top: 0,
+        behavior: 'auto',
+      })
     },
     createTask() {
       document.getElementById('create-title').style.display = 'block'
@@ -449,6 +481,17 @@ export default {
 .body {
   width: 100vw;
 }
+.header {
+  position: fixed; /* ヘッダーを固定する */
+  top: 0; /* 上部から配置の基準位置を決める */
+  left: 0; /* 左から配置の基準位置を決める */
+  width: 100%; /* ヘッダーの横幅を指定する */
+  height: 65px; /* ヘッダーの高さを指定する */
+  padding: 10px; /* ヘッダーの余白を指定する(上下左右) */
+  background-color: rgb(148, 148, 148, 0.8); /* ヘッダーの背景色を指定する */
+  color: #000000; /* フォントの色を指定する */
+  z-index: 40;
+}
 .main {
   position: relative;
   padding: 50px;
@@ -465,7 +508,7 @@ export default {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
   width: 1300px;
-  height: 100vh;
+  height: 100%;
   z-index: 2;
   left: 0;
   right: 0;
@@ -522,6 +565,7 @@ export default {
   width: 100%;
   height: 200px;
   text-align: center;
+  margin-top: 5rem;
 }
 
 .important div:nth-child(2),
