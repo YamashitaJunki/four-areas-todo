@@ -637,7 +637,7 @@ export default {
 }
 .chart {
   width: 90%;
-  transform: translate(30px);
+  margin: auto;
 }
 .area-one::-webkit-scrollbar,
 .area-two::-webkit-scrollbar,
