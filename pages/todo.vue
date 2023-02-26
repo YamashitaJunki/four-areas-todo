@@ -365,19 +365,23 @@ export default {
       })
     },
     submit() {
-      const num = String(this.message.slice(-1))
-      const taskNum = Number(this.hankaku2Zenkaku(num))
-      if (taskNum <= 4 && taskNum >= 1) {
-        const taskMessage = this.message.slice(0, -1)
-        this.$store.commit('todo/insert', {
-          title: this.$route.query.title,
-          message: taskMessage,
-          num: taskNum,
-          checked: false,
-        })
-        this.message = ''
+      if (this.message.length < 2) {
+        alert('タスクメッセージを入力してください')
       } else {
-        alert('末尾に１～４の数字を指定してください')
+        const num = String(this.message.slice(-1))
+        const taskNum = Number(this.hankaku2Zenkaku(num))
+        if (taskNum <= 4 && taskNum >= 1) {
+          const taskMessage = this.message.slice(0, -1)
+          this.$store.commit('todo/insert', {
+            title: this.$route.query.title,
+            message: taskMessage,
+            num: taskNum,
+            checked: false,
+          })
+          this.message = ''
+        } else {
+          alert('末尾に１～４の数字を指定してください')
+        }
       }
     },
     remove(num, idx) {
