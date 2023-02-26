@@ -545,6 +545,12 @@ export default {
   color: #000000;
   z-index: 5;
 }
+.fade-in {
+  animation-name: fadeInAnime;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
 .main {
   position: relative;
   padding: 50px;
@@ -553,6 +559,17 @@ export default {
   max-width: 1800px;
   margin: auto;
   font-family: 'M PLUS Rounded 1c', sans-serif;
+  @extend .fade-in;
+}
+
+@keyframes fadeInAnime {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 .otherDisplay {
   color: white;
@@ -657,6 +674,22 @@ export default {
 }
 .message div {
   width: 300px;
+  animation-name: fadeLeftAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeLeftAnime {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 .message::-webkit-scrollbar,
 .complete {
@@ -665,6 +698,7 @@ export default {
   color: rgb(255, 255, 255);
   -webkit-text-stroke: 0.7px #0b0000;
   text-shadow: 0.5px #120101;
+  @extend .fade-in;
 }
 .uncomplete {
   display: none;
