@@ -1,5 +1,3 @@
-<!-- eslint-disable vue/require-v-for-key -->
-<!-- Please remove this file from your project -->
 <template>
   <div class="body">
     <div class="main">
@@ -19,6 +17,7 @@
           <hr />
           <div
             v-for="toDoTitle in toDoTitleList"
+            :key="toDoTitle"
             class="mt-3 title-name text-info"
           >
             <div @click="changeTitle(toDoTitle)">
@@ -196,7 +195,10 @@
                 </div>
                 <div class="col-6 area-two">
                   ●第2の領域●
-                  <div v-for="(msg, idx) in toDoTitleAndMessages.two">
+                  <div
+                    v-for="(msg, idx) in toDoTitleAndMessages.two"
+                    :key="idx"
+                  >
                     <label class="message"
                       ><el-checkbox
                         :id="`area-two-${idx}`"
@@ -229,7 +231,10 @@
               <div class="row">
                 <div class="col-6 area-three">
                   ●第3の領域●
-                  <div v-for="(msg, idx) in toDoTitleAndMessages.three">
+                  <div
+                    v-for="(msg, idx) in toDoTitleAndMessages.three"
+                    :key="idx"
+                  >
                     <label class="message"
                       ><el-checkbox
                         :id="`area-three-${idx}`"
@@ -259,7 +264,10 @@
                 </div>
                 <div class="col-6 area-four">
                   ●第4の領域●
-                  <div v-for="(msg, idx) in toDoTitleAndMessages.four">
+                  <div
+                    v-for="(msg, idx) in toDoTitleAndMessages.four"
+                    :key="idx"
+                  >
                     <label class="message"
                       ><el-checkbox
                         :id="`area-four-${idx}`"
