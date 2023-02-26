@@ -1,7 +1,8 @@
 export default {
+  ssr: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'four-areas-TODO-app',
+    title: 'four-areas-todo-app',
     htmlAttrs: {
       lang: 'en',
     },
@@ -15,10 +16,10 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['element-ui/lib/theme-chalk/index.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['@/plugins/elementUi'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
