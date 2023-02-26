@@ -7,56 +7,77 @@
         <div class="row">
           <div class="text-left col">FOUR AREAS TODO</div>
           <div class="text-right col">
-            <el-button @click="displayTaskList()">
-              タスクリストを表示
-            </el-button>
+            <el-button @click="factorDisplayOrInvisible(`todo-list`)"
+              >ToDoリストを表示</el-button
+            >
           </div>
         </div>
       </div>
       <div class="mt-5">
-        <div id="create-title" class="create-title">
-          <div>タスク題名を入力</div>
-          <el-input
-            v-model="title"
-            class="w-50 mt-5"
-            type="text"
-            placeholder=""
-          />
-          <el-button type="warning" @click="enterTitle()"> 決定</el-button>
-          <div v-if="TODOTitleList.length >= 1" class="mt-5">
-            <el-button size="small" @click="backTODOList()">
-              タスクリストに戻る
-            </el-button>
-          </div>
-        </div>
-        <div id="title-list" class="title-list">
-          <h2 class="text-primary">タスクを選択してください</h2>
+        <div id="todo-list" class="todo-list">
+          <h2 class="text-primary">タイトルを選択してください</h2>
           <hr />
           <div
-            v-for="todoTitle in TODOTitleList"
+            v-for="toDoTitle in toDoTitleList"
             class="mt-3 title-name text-info"
           >
-            <div @click="titleChange(todoTitle)">
-              <div>●{{ todoTitle }}</div>
+            <div @click="changeTitle(toDoTitle)">
+              <div>●{{ toDoTitle }}</div>
             </div>
           </div>
           <hr />
           <div class="mt-5">
-            <el-button type="success" size="mini" plain @click="createTask()">
-              新しいタスクを作成
+            <el-button
+              type="success"
+              size="mini"
+              plain
+              @click="factorDisplayOrInvisible('title-create')"
+            >
+              新しいToDoタイトルを作成
             </el-button>
             <el-button
               v-if="$route.query.title"
               type="success"
               size="mini"
               plain
-              @click="backTask()"
+              @click="factorDisplayOrInvisible('currentToDo')"
             >
-              現在のタスクに戻る
+              現在のToDoに戻る
             </el-button>
           </div>
         </div>
-        <div id="warning" class="warning">
+        <div id="title-create" class="title-create">
+          <div>ToDoタイトルを作成</div>
+          <el-input
+            v-model="title"
+            class="w-50 mt-5"
+            type="text"
+            placeholder="タイトルを入力してください"
+          />
+          <el-button type="warning" @click="createNewToDoTitle()"
+            >作成</el-button
+          >
+          <div v-if="toDoTitleList.length >= 1" class="mt-5">
+            <el-button
+              type="success"
+              size="mini"
+              plain
+              @click="factorDisplayOrInvisible('todo-list')"
+            >
+              ToDoリストに戻る
+            </el-button>
+            <el-button
+              v-if="$route.query.title"
+              type="success"
+              size="mini"
+              plain
+              @click="factorDisplayOrInvisible('currentToDo')"
+            >
+              現在のToDoに戻る
+            </el-button>
+          </div>
+        </div>
+        <div id="warning-todo-reset" class="warning-todo-reset">
           <div class="mb-3">
             タスクをリセットしますか？
             <div class="text-danger fs-5">この操作は取り消しできません</div>
@@ -64,21 +85,25 @@
           <div class="container">
             <div class="row">
               <div class="col">
-                <el-button type="danger" round class="w-50" @click="reset()"
+                <el-button type="danger" round class="w-50" @click="resetToDo()"
                   >はい</el-button
                 >
               </div>
               <div class="col">
-                <el-button type="primary" round class="w-50" @click="warning()"
+                <el-button
+                  type="primary"
+                  round
+                  class="w-50"
+                  @click="factorDisplayOrInvisible(`warning-todo-reset`)"
                   >いいえ</el-button
                 >
               </div>
             </div>
           </div>
         </div>
-        <div id="delete-task" class="delete-task">
+        <div id="warning-todo-delete" class="warning-todo-delete">
           <div class="mb-3">
-            【{{ TODOMessage.title }}】タスクを削除しますか？
+            ToDo【{{ toDoTitleAndMessages.title }}】を削除しますか？
             <div class="text-danger fs-5">この操作は取り消しできません</div>
           </div>
           <div class="container">
@@ -88,7 +113,7 @@
                   type="danger"
                   round
                   class="w-50"
-                  @click="deleteTask()"
+                  @click="deleteToDo()"
                   >はい</el-button
                 >
               </div>
@@ -97,39 +122,38 @@
                   type="primary"
                   round
                   class="w-50"
-                  @click="displayDelete()"
+                  @click="factorDisplayOrInvisible(`warning-todo-delete`)"
                   >いいえ</el-button
                 >
               </div>
             </div>
           </div>
         </div>
-
-        <div class="top">
+        <div class="enter">
           <div class="mb-3">
             <div>
-              <h3>Enter task.</h3>
-
+              <h3>Enter ToDo!</h3>
               <el-input
                 v-model="message"
                 class="w-50 mt-5 shadow"
                 type="text"
-                placeholder="例:英語の勉強をする2"
-                @keypress.enter.native="submit()"
+                placeholder="入力後Enterキーを押して下さい (入力例:試験の勉強をする2)"
+                @keypress.enter.native="submitMessage()"
               />
             </div>
           </div>
         </div>
         <div>
-          <h1 class="text-center mt-5 mb-5">{{ TODOMessage.title }}</h1>
+          <h1 class="text-center mt-5 mb-5">
+            {{ toDoTitleAndMessages.title }}
+          </h1>
         </div>
         <div class="d-flex">
-          <div class="important">
+          <div class="importance">
             <div></div>
             <div>&emsp;&emsp;&emsp;重要性&emsp;高</div>
             <div>&emsp;&emsp;&emsp;重要性&emsp;低</div>
           </div>
-
           <div class="chart">
             <div class="container-fluid">
               <div class="row text-center mb-3">
@@ -139,12 +163,15 @@
               <div class="row">
                 <div class="col-6 area-one">
                   ●第1の領域●
-                  <div v-for="(msg, idx) in TODOMessage.one" :key="idx">
+                  <div
+                    v-for="(msg, idx) in toDoTitleAndMessages.one"
+                    :key="idx"
+                  >
                     <label class="message"
                       ><el-checkbox
-                        :id="`areaOne-${idx}`"
+                        :id="`area-one-${idx}`"
                         :value="msg.checked"
-                        @change="check(`one`, idx)"
+                        @change="confirmCheckBox(`one`, idx)"
                       >
                         <div :class="{ done: msg.checked }" class="text-dark">
                           {{ msg.message }}
@@ -157,7 +184,7 @@
                       class="delete"
                       size="small"
                       round
-                      @click="remove(`one`, idx)"
+                      @click="removeToDoMessage(`one`, idx)"
                       >削除</el-button
                     >
                     <div
@@ -170,12 +197,12 @@
                 </div>
                 <div class="col-6 area-two">
                   ●第2の領域●
-                  <div v-for="(msg, idx) in TODOMessage.two">
+                  <div v-for="(msg, idx) in toDoTitleAndMessages.two">
                     <label class="message"
                       ><el-checkbox
-                        :id="`areaTwo-${idx}`"
+                        :id="`area-two-${idx}`"
                         :value="msg.checked"
-                        @change="check(`two`, idx)"
+                        @change="confirmCheckBox(`two`, idx)"
                       >
                         <div :class="{ done: msg.checked }" class="text-dark">
                           {{ msg.message }}
@@ -188,7 +215,7 @@
                       class="delete"
                       size="small"
                       round
-                      @click="remove(`two`, idx)"
+                      @click="removeToDoMessage(`two`, idx)"
                       >削除</el-button
                     >
                     <div
@@ -203,12 +230,12 @@
               <div class="row">
                 <div class="col-6 area-three">
                   ●第3の領域●
-                  <div v-for="(msg, idx) in TODOMessage.three">
+                  <div v-for="(msg, idx) in toDoTitleAndMessages.three">
                     <label class="message"
                       ><el-checkbox
-                        :id="`areaThree-${idx}`"
+                        :id="`area-three-${idx}`"
                         :value="msg.checked"
-                        @change="check(`three`, idx)"
+                        @change="confirmCheckBox(`three`, idx)"
                       >
                         <div :class="{ done: msg.checked }" class="text-dark">
                           {{ msg.message }}
@@ -220,7 +247,7 @@
                       class="delete"
                       size="small"
                       round
-                      @click="remove(`three`, idx)"
+                      @click="removeToDoMessage(`three`, idx)"
                       >削除</el-button
                     >
                     <div
@@ -233,12 +260,12 @@
                 </div>
                 <div class="col-6 area-four">
                   ●第4の領域●
-                  <div v-for="(msg, idx) in TODOMessage.four">
+                  <div v-for="(msg, idx) in toDoTitleAndMessages.four">
                     <label class="message"
                       ><el-checkbox
-                        :id="`areaFour-${idx}`"
+                        :id="`area-four-${idx}`"
                         :value="msg.checked"
-                        @change="check(`four`, idx)"
+                        @change="confirmCheckBox(`four`, idx)"
                       >
                         <div :class="{ done: msg.checked }" class="text-dark">
                           {{ msg.message }}
@@ -250,7 +277,7 @@
                       class="delete"
                       size="small"
                       round
-                      @click="remove(`four`, idx)"
+                      @click="removeToDoMessage(`four`, idx)"
                       >削除</el-button
                     >
                     <div
@@ -266,13 +293,20 @@
           </div>
         </div>
       </div>
-
       <div class="text-center mt-5">
-        <el-button type="warning" round class="mb-5" @click="warning()"
-          >タスク項目のリセット</el-button
+        <el-button
+          type="warning"
+          round
+          class="mb-5"
+          @click="factorDisplayOrInvisible(`warning-todo-reset`)"
+          >ToDo項目のリセット</el-button
         >
-        <el-button type="danger" round class="mb-5" @click="displayDelete()"
-          >!このタスクを削除する!</el-button
+        <el-button
+          type="danger"
+          round
+          class="mb-5"
+          @click="factorDisplayOrInvisible(`warning-todo-delete`)"
+          >このToDoを削除する</el-button
         >
       </div>
       <hr />
@@ -287,19 +321,17 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: 'NuxtTutorial',
+  name: 'ToDoApp',
   data: () => {
     return {
       message: '',
       title: '',
-      taskData: {},
     }
   },
   computed: {
-    TODOMessage: function () {
+    toDoTitleAndMessages: function () {
       if (!this.$route.query.title) {
         return {
           title: '',
@@ -319,32 +351,64 @@ export default {
         }
       }
     },
-    TODOTitleList: {
+    toDoTitleList: {
       cache: false,
       get() {
         return Object.keys(this.$store.state.todo)
       },
+      set() {},
     },
   },
   mounted() {
     if (this.$route.query.title) {
-      document.getElementById('title-list').style.display = 'none'
-      document.getElementById('create-title').style.display = 'none'
+      document.getElementById('todo-list').style.display = 'none'
+      document.getElementById('title-create').style.display = 'none'
     } else {
-      const numberOfTasks = Object.keys(this.$store.state.todo).length
-      if (numberOfTasks === 0) {
-        document.getElementById('title-list').style.display = 'none'
-        document.getElementById('create-title').style.display = 'block'
+      const numberOfToDos = Object.keys(this.$store.state.todo).length
+      if (numberOfToDos === 0) {
+        document.getElementById('todo-list').style.display = 'none'
+        document.getElementById('title-create').style.display = 'block'
       } else {
-        document.getElementById('title-list').style.display = 'block'
-        document.getElementById('create-title').style.display = 'none'
+        document.getElementById('todo-list').style.display = 'block'
+        document.getElementById('title-create').style.display = 'none'
       }
     }
   },
 
   methods: {
-    test() {},
-    enterTitle() {
+    factorDisplayOrInvisible(id) {
+      const display = document.getElementById(id)
+      if (id === 'todo-list') {
+        document.getElementById('todo-list').style.display = 'block'
+        document.getElementById('title-create').style.display = 'none'
+        document.getElementById('warning-todo-delete').style.display = 'none'
+        document.getElementById('warning-todo-reset').style.display = 'none'
+      } else if (id === 'title-create') {
+        document.getElementById('title-create').style.display = 'block'
+        document.getElementById('todo-list').style.display = 'none'
+      } else if (id === 'currentToDo') {
+        document.getElementById('todo-list').style.display = 'none'
+        document.getElementById('title-create').style.display = 'none'
+      } else if (display.style.display === 'block') {
+        display.style.display = 'none'
+      } else {
+        display.style.display = 'block'
+      }
+      window.scroll({
+        top: 0,
+        behavior: 'auto',
+      })
+    },
+    changeTitle(title) {
+      this.$router.push({ path: '/todo', query: { title } })
+      const display = document.getElementById('todo-list')
+      if (display.style.display === 'block') {
+        display.style.display = 'none'
+      } else {
+        display.style.display = 'block'
+      }
+    },
+    createNewToDoTitle() {
       if (this.title.length === 0) {
         alert('タスクタイトルを入力してください')
       } else {
@@ -352,30 +416,44 @@ export default {
           title: this.title,
           areas: { one: [], two: [], three: [], four: [] },
         }
-        this.$store.commit('todo/enterTitle', taskObj)
+        this.$store.commit('todo/createNewToDoTitle', taskObj)
         this.$router.push({ path: '/todo', query: { title: this.title } })
-        document.getElementById('create-title').style.display = 'none'
+        document.getElementById('title-create').style.display = 'none'
       }
     },
-    check(area, idx) {
-      this.$store.commit('todo/changeCheck', {
-        area,
-        idx,
-        title: this.$route.query.title,
-      })
+    resetToDo() {
+      this.$store.commit('todo/resetToDo', this.$route.query.title)
+      document.getElementById('warning-todo-reset').style.display = 'none'
+      this.title = ''
     },
-    submit() {
+    deleteToDo() {
+      this.$store.commit('todo/deleteToDo', this.$route.query.title)
+      this.$router.push({ path: '/todo' })
+      const num = Object.keys(this.$store.state.todo)
+      if (num.length >= 1) {
+        document.getElementById('todo-list').style.display = 'block'
+        document.getElementById('title-create').style.display = 'none'
+        document.getElementById('warning-todo-delete').style.display = 'none'
+      } else if (num.length === 0) {
+        document.getElementById('todo-list').style.display = 'none'
+        document.getElementById('title-create').style.display = 'block'
+        document.getElementById('warning-todo-delete').style.display = 'none'
+      }
+    },
+    submitMessage() {
       if (this.message.length < 2) {
         alert('タスクメッセージを入力してください')
       } else {
-        const num = String(this.message.slice(-1))
-        const taskNum = Number(this.hankaku2Zenkaku(num))
-        if (taskNum <= 4 && taskNum >= 1) {
-          const taskMessage = this.message.slice(0, -1)
-          this.$store.commit('todo/insert', {
+        const trailingNumber = String(this.message.slice(-1))
+        const areaNumber = Number(
+          this.convertFullwidthIntoHalfwidth(trailingNumber)
+        )
+        if (areaNumber <= 4 && areaNumber >= 1) {
+          const toDoMessage = this.message.slice(0, -1)
+          this.$store.commit('todo/submitMessage', {
             title: this.$route.query.title,
-            message: taskMessage,
-            num: taskNum,
+            toDoMessage,
+            areaNumber,
             checked: false,
           })
           this.message = ''
@@ -384,102 +462,25 @@ export default {
         }
       }
     },
-    remove(num, idx) {
-      this.$store.commit('todo/remove', {
+    confirmCheckBox(area, index) {
+      this.$store.commit('todo/confirmCheckBox', {
+        area,
+        index,
         title: this.$route.query.title,
-        number: num,
-        index: idx,
       })
     },
-    reset() {
-      this.$store.commit('todo/reset', this.$route.query.title)
-      document.getElementById('warning').style.display = 'none'
-      this.title = ''
-    },
-    warning() {
-      const p1 = document.getElementById('warning')
-
-      if (p1.style.display === 'block') {
-        // noneで非表示
-        p1.style.display = 'none'
-      } else {
-        // blockで表示
-        p1.style.display = 'block'
-      }
-      window.scroll({
-        top: 0,
-        behavior: 'auto',
+    removeToDoMessage(area, index) {
+      this.$store.commit('todo/removeToDoMessage', {
+        title: this.$route.query.title,
+        area,
+        index,
       })
     },
-    displayDelete() {
-      const p1 = document.getElementById('delete-task')
-
-      if (p1.style.display === 'block') {
-        // noneで非表示
-        p1.style.display = 'none'
-      } else {
-        // blockで表示
-        p1.style.display = 'block'
-      }
-      window.scroll({
-        top: 0,
-        behavior: 'auto',
-      })
-    },
-    hankaku2Zenkaku(str) {
+    convertFullwidthIntoHalfwidth(str) {
       return str.replace(/[０-９]/g, function (s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0)
       })
     },
-    titleChange(title) {
-      // eslint-disable-next-line object-shorthand
-      this.$router.push({ path: '/todo', query: { title: title } })
-      const p1 = document.getElementById('title-list')
-
-      if (p1.style.display === 'block') {
-        // noneで非表示
-        p1.style.display = 'none'
-      } else {
-        // blockで表示
-        p1.style.display = 'block'
-      }
-    },
-    displayTaskList() {
-      document.getElementById('title-list').style.display = 'block'
-      document.getElementById('create-title').style.display = 'none'
-      document.getElementById('delete-task').style.display = 'none'
-      document.getElementById('warning').style.display = 'none'
-      window.scroll({
-        top: 0,
-        behavior: 'auto',
-      })
-    },
-    createTask() {
-      document.getElementById('create-title').style.display = 'block'
-      document.getElementById('title-list').style.display = 'none'
-    },
-    deleteTask() {
-      this.$store.commit('todo/delete', this.$route.query.title)
-      this.$router.push({ path: '/todo' })
-      const num = Object.keys(this.$store.state.todo)
-      if (num.length >= 1) {
-        document.getElementById('title-list').style.display = 'block'
-        document.getElementById('create-title').style.display = 'none'
-        document.getElementById('delete-task').style.display = 'none'
-      } else if (num.length === 0) {
-        document.getElementById('title-list').style.display = 'none'
-        document.getElementById('create-title').style.display = 'block'
-        document.getElementById('delete-task').style.display = 'none'
-      }
-    },
-    backTODOList() {
-      document.getElementById('title-list').style.display = 'block'
-      document.getElementById('create-title').style.display = 'none'
-    },
-    backTask() {
-      document.getElementById('title-list').style.display = 'none'
-    },
-    boolCheck() {},
   },
 }
 </script>
@@ -491,15 +492,15 @@ export default {
   width: 100vw;
 }
 .header {
-  position: fixed; /* ヘッダーを固定する */
-  top: 0; /* 上部から配置の基準位置を決める */
-  left: 0; /* 左から配置の基準位置を決める */
-  width: 100%; /* ヘッダーの横幅を指定する */
-  height: 65px; /* ヘッダーの高さを指定する */
-  padding: 10px; /* ヘッダーの余白を指定する(上下左右) */
-  background-color: rgb(148, 148, 148, 0.8); /* ヘッダーの背景色を指定する */
-  color: #000000; /* フォントの色を指定する */
-  z-index: 40;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  color: #000000;
+  z-index: 5;
 }
 .main {
   position: relative;
@@ -508,9 +509,14 @@ export default {
   width: 1300px;
   margin: auto;
   font-family: 'M PLUS Rounded 1c', sans-serif;
+  background-image: linear-gradient(
+    90deg,
+    rgba(149, 233, 243, 1),
+    rgba(251, 213, 251, 1)
+  );
 }
-.warning,
-.delete-task {
+.warning-todo-reset,
+.warning-todo-delete {
   color: white;
   display: none;
   margin: auto;
@@ -526,7 +532,7 @@ export default {
   text-align: center;
   padding: 400px;
 }
-.create-title {
+.title-create {
   color: white;
   margin: auto;
   display: none;
@@ -534,7 +540,7 @@ export default {
   background-color: rgb(195, 229, 255);
   width: 1300px;
   height: 100%;
-  z-index: 30;
+  z-index: 2;
   left: 0;
   right: 0;
   top: 0;
@@ -542,7 +548,7 @@ export default {
   text-align: center;
   padding: 400px;
 }
-.title-list {
+.todo-list {
   color: white;
   margin: auto;
   position: absolute;
@@ -570,15 +576,15 @@ export default {
   opacity: 0.4;
 }
 
-.top {
+.enter {
   width: 100%;
   height: 200px;
   text-align: center;
   margin-top: 5rem;
 }
 
-.important div:nth-child(2),
-.important div:nth-child(3) {
+.importance div:nth-child(2),
+.importance div:nth-child(3) {
   height: 300px;
   writing-mode: vertical-rl;
   text-align: center;

@@ -1,49 +1,48 @@
 export const state = () => ({})
 
 export const mutations = {
-  enterTitle(state, obj) {
+  createNewToDoTitle(state, obj) {
     state[obj.title] = obj.areas
   },
-  insert(state, obj) {
-    if (obj.num === 1) {
+  submitMessage(state, obj) {
+    if (obj.areaNumber === 1) {
       state[obj.title].one.push({
-        message: obj.message,
+        message: obj.toDoMessage,
         checked: false,
       })
     }
-    if (obj.num === 2) {
+    if (obj.areaNumber === 2) {
       state[obj.title].two.push({
-        message: obj.message,
+        message: obj.toDoMessage,
         checked: false,
       })
     }
-    if (obj.num === 3) {
+    if (obj.areaNumber === 3) {
       state[obj.title].three.push({
-        message: obj.message,
+        message: obj.toDoMessage,
         checked: false,
       })
     }
-    if (obj.num === 4) {
+    if (obj.areaNumber === 4) {
       state[obj.title].four.push({
-        message: obj.message,
+        message: obj.toDoMessage,
         checked: false,
       })
     }
   },
-  remove(state, obj) {
-    const num = obj.number
-    state[obj.title][num].splice(obj.index, 1)
+  removeToDoMessage(state, obj) {
+    state[obj.title][obj.area].splice(obj.index, 1)
   },
-  reset(state, title) {
-    Object.keys(state[title]).forEach((data) => {
-      state[title][data] = []
+  resetToDo(state, title) {
+    Object.keys(state[title]).forEach((toDo) => {
+      state[title][toDo] = []
     })
   },
-  changeCheck(state, obj) {
-    state[obj.title][obj.area][obj.idx].checked =
-      !state[obj.title][obj.area][obj.idx].checked
+  confirmCheckBox(state, obj) {
+    state[obj.title][obj.area][obj.index].checked =
+      !state[obj.title][obj.area][obj.index].checked
   },
-  delete(state, title) {
+  deleteToDo(state, title) {
     delete state[title]
   },
 }
