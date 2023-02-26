@@ -1,5 +1,5 @@
 <template>
-  <TodoApp />
+  <TopPage />
 </template>
 
 <script>

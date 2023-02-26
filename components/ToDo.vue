@@ -3,7 +3,9 @@
     <div class="main">
       <div class="header content">
         <div class="row">
-          <div class="text-left col">FOUR AREAS TODO</div>
+          <nuxt-link to="/" class="col header-title"
+            >Four Areas Todo App.</nuxt-link
+          >
           <div class="text-right col">
             <el-button @click="factorDisplayOrInvisible(`todo-list`)"
               >ToDoリストを表示</el-button
@@ -11,14 +13,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="title-rename">
-          <el-input
-            v-model="rename"
-            class="w-50 mt-5 shadow"
-            type="text"
-            @keypress.enter.native="submitMessage()"
-          />
-        </div> -->
+
       <div class="mt-5">
         <div id="todo-list" class="todo-list">
           <h2 class="text-primary">タイトルを選択してください</h2>
@@ -171,11 +166,11 @@
           </div>
           <div class="chart">
             <div class="container-fluid">
-              <div class="row text-center mb-3">
+              <div class="row text-center">
                 <div class="col-6">緊急性&emsp;高</div>
                 <div class="col-6">緊急性&emsp;低</div>
               </div>
-              <div class="row">
+              <div class="row mt-4">
                 <div class="col-6 area-one">
                   ●第1の領域●
                   <div
@@ -334,11 +329,7 @@
       </div>
       <hr />
       <div class="row justify-content-center">
-        <el-button>
-          <a href="https://github.com/YamashitaJunki" target="_blank">
-            About Developer</a
-          >
-        </el-button>
+        <el-button @click="goToGitHub()"> About Developer </el-button>
         <div>&emsp;©&nbsp;2023&nbsp;YamashitaJunki</div>
       </div>
     </div>
@@ -517,11 +508,16 @@ export default {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0)
       })
     },
+    goToGitHub() {
+      const url = 'https://github.com/YamashitaJunki'
+      window.open(url, '_blank')
+    },
   },
 }
 </script>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&family=Shadows+Into+Light&display=swap');
 
 .body {
   width: 100vw;
@@ -541,6 +537,16 @@ export default {
   background-color: rgb(255, 255, 255);
   color: #000000;
   z-index: 5;
+}
+.header-title {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-family: 'Shadows Into Light', cursive;
+  color: #000000;
+  transition: all 0.3s ease 0s;
+}
+.header-title:hover {
+  text-decoration: none;
+  opacity: 0.4;
 }
 .fade-in {
   animation-name: fadeInAnime;
@@ -563,7 +569,6 @@ export default {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -632,7 +637,7 @@ export default {
 }
 .chart {
   width: 90%;
-  transform: translate(25px);
+  transform: translate(30px);
 }
 .area-one::-webkit-scrollbar,
 .area-two::-webkit-scrollbar,
