@@ -54,7 +54,7 @@
      </div>
      <div class="flex-grow-1 ms-3 ml-5">
       <div>
-        2.Todoを編集します
+        2.ToDoを編集します
       </div>
       <div class="explanation">
         <div>
@@ -67,7 +67,7 @@
           &nbsp; ③そのToDoが完了し、クリックすると「Complete!!」が表示
         </div>
         <div>
-          &nbsp; ④ToDoの削除ボタン
+          &nbsp; ④ToDoの削除
         </div>
         <div>
           &nbsp; ⑤現在のToDoの全領域を一括リセット

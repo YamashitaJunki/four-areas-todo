@@ -521,6 +521,7 @@ export default {
 
 .body {
   width: 100vw;
+  min-width: 1300px;
   background-image: linear-gradient(
     90deg,
     rgba(149, 233, 243, 1),

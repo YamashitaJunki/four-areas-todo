@@ -17,9 +17,6 @@
     rgba(149, 233, 243, 1)
   );
 }
-.top {
-  /* margin-top: 3rem; */
-}
 .pc {
   width: 500px;
 }
