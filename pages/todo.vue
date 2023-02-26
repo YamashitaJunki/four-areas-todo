@@ -175,7 +175,6 @@
                       >
                         <div :class="{ done: msg.checked }" class="text-dark">
                           {{ msg.message }}
-                          {{ msg.checked }}
                         </div>
                       </el-checkbox>
                     </label>
@@ -357,6 +356,11 @@ export default {
         return Object.keys(this.$store.state.todo)
       },
       set() {},
+    },
+  },
+  watch: {
+    $route() {
+      location.reload()
     },
   },
   mounted() {
