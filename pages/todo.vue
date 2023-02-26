@@ -181,14 +181,14 @@
                     </label>
                     <el-button
                       type="primary"
-                      class="delete"
+                      class="float-right"
                       size="small"
                       round
                       @click="removeToDoMessage(`one`, idx)"
                       >削除</el-button
                     >
                     <div
-                      class="delete"
+                      class="float-right"
                       :class="[msg.checked ? 'complete' : 'uncomplete']"
                     >
                       complete!!&emsp;
@@ -212,14 +212,14 @@
 
                     <el-button
                       type="primary"
-                      class="delete"
+                      class="float-right"
                       size="small"
                       round
                       @click="removeToDoMessage(`two`, idx)"
                       >削除</el-button
                     >
                     <div
-                      class="delete"
+                      class="float-right"
                       :class="[msg.checked ? 'complete' : 'uncomplete']"
                     >
                       complete!!&emsp;
@@ -244,14 +244,14 @@
                     </label>
                     <el-button
                       type="primary"
-                      class="delete"
+                      class="float-right"
                       size="small"
                       round
                       @click="removeToDoMessage(`three`, idx)"
                       >削除</el-button
                     >
                     <div
-                      class="delete"
+                      class="float-right"
                       :class="[msg.checked ? 'complete' : 'uncomplete']"
                     >
                       complete!!&emsp;
@@ -274,14 +274,14 @@
                     </label>
                     <el-button
                       type="primary"
-                      class="delete"
+                      class="float-right"
                       size="small"
                       round
                       @click="removeToDoMessage(`four`, idx)"
                       >削除</el-button
                     >
                     <div
-                      class="delete"
+                      class="float-right"
                       :class="[msg.checked ? 'complete' : 'uncomplete']"
                     >
                       complete!!&emsp;
@@ -484,12 +484,16 @@ export default {
   },
 }
 </script>
-
-<style>
+<style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap');
 
 .body {
   width: 100vw;
+  background-image: linear-gradient(
+    90deg,
+    rgba(149, 233, 243, 1),
+    rgba(251, 213, 251, 1)
+  );
 }
 .header {
   position: fixed;
@@ -506,68 +510,40 @@ export default {
   position: relative;
   padding: 50px;
   font-size: 1.5rem;
-  width: 1300px;
+  min-width: 1300px;
+  max-width: 1800px;
   margin: auto;
   font-family: 'M PLUS Rounded 1c', sans-serif;
-  background-image: linear-gradient(
-    90deg,
-    rgba(149, 233, 243, 1),
-    rgba(251, 213, 251, 1)
-  );
+}
+.otherDisplay {
+  color: white;
+  display: none;
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 400px;
 }
 .warning-todo-reset,
 .warning-todo-delete {
-  color: white;
-  display: none;
-  margin: auto;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
-  width: 1300px;
-  height: 100%;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  text-align: center;
-  padding: 400px;
+  @extend .otherDisplay;
+  background-color: rgba(0, 0, 0, 0.9);
 }
 .title-create {
-  color: white;
-  margin: auto;
-  display: none;
-  position: absolute;
+  @extend .otherDisplay;
   background-color: rgb(195, 229, 255);
-  width: 1300px;
-  height: 100%;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  text-align: center;
-  padding: 400px;
 }
 .todo-list {
-  color: white;
-  margin: auto;
-  position: absolute;
+  @extend .otherDisplay;
   background-image: linear-gradient(
     90deg,
     rgba(251, 213, 251, 1),
     rgba(149, 233, 243, 1)
   );
-  width: 1300px;
-  height: 100%;
-  z-index: 3;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  text-align: center;
-  padding: 400px;
 }
-
 .title-name {
   cursor: pointer;
   transition: all 0.3s ease 0s;
@@ -575,14 +551,12 @@ export default {
 .title-name:hover {
   opacity: 0.4;
 }
-
 .enter {
   width: 100%;
   height: 200px;
   text-align: center;
   margin-top: 5rem;
 }
-
 .importance div:nth-child(2),
 .importance div:nth-child(3) {
   height: 300px;
@@ -593,54 +567,35 @@ export default {
   width: 90%;
   transform: translate(25px);
 }
-
-.area-one {
-  background-color: rgb(235, 87, 82);
-  padding: 40px;
-  width: 45%;
-  height: 300px;
-  overflow: scroll;
-  font-size: 1rem;
-  border-radius: 30px;
-}
-.area-one::-webkit-scrollbar {
-  display: none;
-}
-.area-two {
-  background-color: #fdd35c;
-  padding: 40px;
-  width: 45%;
-  height: 300px;
-  overflow: scroll;
-  font-size: 1rem;
-  border-radius: 30px;
-}
-.area-two::-webkit-scrollbar {
-  display: none;
-}
-.area-three {
-  background-color: #00ac97;
-  padding: 40px;
-  width: 45%;
-  height: 300px;
-  overflow: scroll;
-  font-size: 1rem;
-  border-radius: 30px;
-}
-.area-three::-webkit-scrollbar {
-  display: none;
-}
-.area-four {
-  background-color: #00a1e9;
-  padding: 40px;
-  width: 45%;
-  height: 300px;
-  overflow: scroll;
-  font-size: 1rem;
-  border-radius: 30px;
-}
+.area-one::-webkit-scrollbar,
+.area-two::-webkit-scrollbar,
+.area-three::-webkit-scrollbar,
 .area-four::-webkit-scrollbar {
   display: none;
+}
+.area {
+  padding: 40px;
+  width: 45%;
+  height: 300px;
+  overflow: scroll;
+  font-size: 1rem;
+  border-radius: 30px;
+}
+.area-one {
+  @extend .area;
+  background-color: rgb(235, 87, 82);
+}
+.area-two {
+  @extend .area;
+  background-color: #fdd35c;
+}
+.area-three {
+  @extend .area;
+  background-color: #00ac97;
+}
+.area-four {
+  @extend .area;
+  background-color: #00a1e9;
 }
 .message {
   width: 300px;
@@ -650,20 +605,7 @@ export default {
 .message div {
   width: 300px;
 }
-/*スクロールバー非表示（Chrome・Safari）*/
-.message::-webkit-scrollbar {
-  display: none;
-}
-
-.delete {
-  float: right;
-}
-label {
-  cursor: pointer;
-}
-.bb {
-  background-color: aqua;
-}
+.message::-webkit-scrollbar,
 .complete {
   display: block;
   float: right;
@@ -673,6 +615,12 @@ label {
 }
 .uncomplete {
   display: none;
+}
+.float-right {
+  float: right;
+}
+label {
+  cursor: pointer;
 }
 .done {
   text-decoration: line-through;
