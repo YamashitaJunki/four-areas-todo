@@ -345,13 +345,17 @@ export default {
   methods: {
     test() {},
     enterTitle() {
-      const taskObj = {
-        title: this.title,
-        areas: { one: [], two: [], three: [], four: [] },
+      if (this.title.length === 0) {
+        alert('タスクタイトルを入力してください')
+      } else {
+        const taskObj = {
+          title: this.title,
+          areas: { one: [], two: [], three: [], four: [] },
+        }
+        this.$store.commit('todo/enterTitle', taskObj)
+        this.$router.push({ path: '/todo', query: { title: this.title } })
+        document.getElementById('create-title').style.display = 'none'
       }
-      this.$store.commit('todo/enterTitle', taskObj)
-      this.$router.push({ path: '/todo', query: { title: this.title } })
-      document.getElementById('create-title').style.display = 'none'
     },
     check(area, idx) {
       this.$store.commit('todo/changeCheck', {
