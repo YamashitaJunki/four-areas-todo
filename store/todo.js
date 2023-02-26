@@ -33,6 +33,12 @@ export const mutations = {
   removeToDoMessage(state, obj) {
     state[obj.title][obj.area].splice(obj.index, 1)
   },
+  renameToDoTitle(state, obj) {
+    const messageAndChecked = state[obj.before]
+    delete state[obj.before]
+    state[obj.after] = messageAndChecked
+    this.$router.push({ path: '/todo', query: { title: obj.after } })
+  },
   resetToDo(state, title) {
     Object.keys(state[title]).forEach((toDo) => {
       state[title][toDo] = []

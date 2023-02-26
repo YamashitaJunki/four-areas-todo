@@ -11,6 +11,14 @@
           </div>
         </div>
       </div>
+      <!-- <div class="title-rename">
+        <el-input
+          v-model="rename"
+          class="w-50 mt-5 shadow"
+          type="text"
+          @keypress.enter.native="submitMessage()"
+        />
+      </div> -->
       <div class="mt-5">
         <div id="todo-list" class="todo-list">
           <h2 class="text-primary">タイトルを選択してください</h2>
@@ -143,9 +151,17 @@
           </div>
         </div>
         <div>
-          <h1 class="text-center mt-5 mb-5">
+          <!-- <h1 class="text-center mt-5 mb-5">
             {{ toDoTitleAndMessages.title }}
-          </h1>
+          </h1> -->
+          <div class="title-rename mt-5 mb-5">
+            <input
+              v-model="rename"
+              class="w-50 title"
+              type="text"
+              @keypress.enter="renameToDoTitle()"
+            />
+          </div>
         </div>
         <div class="d-flex">
           <div class="importance">
@@ -331,6 +347,11 @@
 <script>
 export default {
   name: 'ToDoApp',
+  asyncData(context) {
+    return {
+      rename: context.query.title,
+    }
+  },
   data: () => {
     return {
       message: '',
@@ -474,6 +495,12 @@ export default {
         }
       }
     },
+    renameToDoTitle() {
+      this.$store.commit('todo/renameToDoTitle', {
+        before: this.$route.query.title,
+        after: this.rename,
+      })
+    },
     confirmCheckBox(area, index) {
       this.$store.commit('todo/confirmCheckBox', {
         area,
@@ -563,6 +590,20 @@ export default {
 .title-name:hover {
   opacity: 0.4;
 }
+
+.title-rename {
+  text-align: center;
+  margin: auto;
+  width: 900px;
+  height: 80px;
+}
+
+.title {
+  text-align: center;
+  height: 80px;
+  background-color: transparent;
+}
+
 .enter {
   width: 100%;
   height: 200px;
