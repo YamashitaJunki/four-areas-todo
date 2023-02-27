@@ -1,6 +1,6 @@
 <template>
 <div class="top-main">
-  <div class="header content">
+  <div class="header content-fluid">
         <div class="row">
           <nuxt-link to="/" class="col header-title"
             >Four Areas Todo App.</nuxt-link
@@ -144,7 +144,7 @@ export default {
 }
 .top-main {
   font-size: 1.5rem;
-  min-width: 1300px;
+  min-width: 1450px;
   max-width: 1800px;
   margin: auto;
   font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -203,7 +203,7 @@ export default {
 }
 .detail-box-cel{
 width: 75%;
-height:70%;
+height:75%;
 margin: auto;
 padding: 2rem;
 border: 2px solid;
