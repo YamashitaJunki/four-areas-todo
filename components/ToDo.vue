@@ -146,13 +146,10 @@
           </div>
         </div>
         <div>
-          <!-- <h1 class="text-center mt-5 mb-5">
-              {{ toDoTitleAndMessages.title }}
-            </h1> -->
           <div class="title-rename mt-5 mb-5">
             <input
               v-model="rename"
-              class="w-50 title"
+              class="w-50 todo-title"
               type="text"
               @keypress.enter="renameToDoTitle()"
             />
@@ -618,7 +615,7 @@ export default {
   height: 80px;
 }
 
-.title {
+.todo-title {
   text-align: center;
   height: 80px;
   background-color: transparent;
