@@ -1,55 +1,54 @@
-export const state = () => ({
-  task: {
-    thisIsTestObject: {
-      one: [],
-      two: [],
-      three: [],
-      four: [],
-    },
-  },
-})
+export const state = () => ({})
 
 export const mutations = {
-  enterTitle(state, obj) {
-    state.task[obj.title] = obj.area
+  createNewToDoTitle(state, obj) {
+    state[obj.title] = obj.areas
   },
-  insert(state, obj) {
-    if (obj.num === 1) {
-      state.task[obj.title].one.push({
-        message: obj.message,
+  submitMessage(state, obj) {
+    if (obj.areaNumber === 1) {
+      state[obj.title].one.push({
+        message: obj.toDoMessage,
         checked: false,
       })
     }
-    if (obj.num === 2) {
-      state.task[obj.title].two.push({
-        message: obj.message,
+    if (obj.areaNumber === 2) {
+      state[obj.title].two.push({
+        message: obj.toDoMessage,
         checked: false,
       })
     }
-    if (obj.num === 3) {
-      state.task[obj.title].three.push({
-        message: obj.message,
+    if (obj.areaNumber === 3) {
+      state[obj.title].three.push({
+        message: obj.toDoMessage,
         checked: false,
       })
     }
-    if (obj.num === 4) {
-      state.task[obj.title].four.push({
-        message: obj.message,
+    if (obj.areaNumber === 4) {
+      state[obj.title].four.push({
+        message: obj.toDoMessage,
         checked: false,
       })
     }
   },
-  remove(state, obj) {
-    const num = obj.number
-    state.task[obj.title][num].splice(obj.index, 1)
+  removeToDoMessage(state, obj) {
+    state[obj.title][obj.area].splice(obj.index, 1)
   },
-  reset(state, title) {
-    Object.keys(state.task[title]).forEach((data) => {
-      state.task[title][data] = []
+  renameToDoTitle(state, obj) {
+    const messageAndChecked = state[obj.before]
+    delete state[obj.before]
+    state[obj.after] = messageAndChecked
+    this.$router.push({ path: '/todo', query: { title: obj.after } })
+  },
+  resetToDo(state, title) {
+    Object.keys(state[title]).forEach((toDo) => {
+      state[title][toDo] = []
     })
   },
-  changeCheck(state, obj) {
-    state.task[obj.title][obj.area][obj.idx].checked =
-      !state.task[obj.title][obj.area][obj.idx].checked
+  confirmCheckBox(state, obj) {
+    state[obj.title][obj.area][obj.index].checked =
+      !state[obj.title][obj.area][obj.index].checked
+  },
+  deleteToDo(state, title) {
+    delete state[title]
   },
 }
