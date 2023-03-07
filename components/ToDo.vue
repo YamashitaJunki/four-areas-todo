@@ -481,10 +481,14 @@ export default {
       }
     },
     renameToDoTitle() {
-      this.$store.commit('todo/renameToDoTitle', {
-        before: this.$route.query.title,
-        after: this.rename,
-      })
+      if (this.rename.length === 0) {
+        alert('タイトルは１文字以上で入力してください。')
+      } else {
+        this.$store.commit('todo/renameToDoTitle', {
+          before: this.$route.query.title,
+          after: this.rename,
+        })
+      }
     },
     confirmCheckBox(area, index) {
       this.$store.commit('todo/confirmCheckBox', {
